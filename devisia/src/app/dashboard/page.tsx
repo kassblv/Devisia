@@ -1,0 +1,333 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import prisma from "@/lib/prisma";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface DashboardStats {
+  totalQuotes: number;
+  pendingQuotes: number;
+  approvedQuotes: number;
+  totalRevenue: number;
+}
+
+interface RecentQuote {
+  id: string;
+  quoteNumber: string;
+  clientName: string;
+  totalAmount: number;
+  status: string;
+  createdAt: string;
+}
+
+export default function Dashboard() {
+  const { data: session } = useSession();
+  const [stats, setStats] = useState<DashboardStats>({
+    totalQuotes: 0,
+    pendingQuotes: 0,
+    approvedQuotes: 0,
+    totalRevenue: 0,
+  });
+  const [recentQuotes, setRecentQuotes] = useState<RecentQuote[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      if (session?.user?.id) {
+        try {
+          const response = await fetch(`/api/dashboard?userId=${session.user.id}`);
+          const data = await response.json();
+          
+          if (response.ok) {
+            setStats(data.stats);
+            setRecentQuotes(data.recentQuotes);
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement des données du tableau de bord:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    if (session?.user?.id) {
+      fetchDashboardData();
+    }
+  }, [session]);
+
+  // Nous utilisons directement les stats et quotes actuels
+  // Les composants Skeleton s'afficheront pendant le chargement
+  const displayStats = stats;
+  const displayQuotes = recentQuotes;
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'DRAFT':
+        return 'bg-slate-100 text-slate-700 border border-slate-200';
+      case 'PENDING':
+        return 'bg-amber-100 text-amber-700 border border-amber-200';
+      case 'SENT':
+        return 'bg-indigo-100 text-indigo-700 border border-indigo-200';
+      case 'APPROVED':
+        return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
+      case 'REJECTED':
+        return 'bg-rose-100 text-rose-700 border border-rose-200';
+      default:
+        return 'bg-slate-100 text-slate-700 border border-slate-200';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'DRAFT':
+        return 'Brouillon';
+      case 'SENT':
+        return 'Envoyé';
+      case 'APPROVED':
+        return 'Approuvé';
+      case 'REJECTED':
+        return 'Refusé';
+      default:
+        return status;
+    }
+  };
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Total Quotes Card - Style amélioré avec dégradé et ombre colorée */}
+        <div className="bg-white bg-gradient-to-br from-white to-indigo-50 rounded-xl shadow-md hover:shadow-lg hover:shadow-indigo-100 p-6 border border-indigo-100 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-br from-indigo-400 to-indigo-600 text-white p-4 rounded-lg shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
+            </div>
+            <div className="ml-5">
+              <h3 className="text-sm font-medium text-indigo-600">Total devis</h3>
+              {loading ? (
+                <Skeleton className="h-8 w-12" />
+              ) : (
+                <p className="text-2xl font-bold text-gray-900">{displayStats.totalQuotes}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Pending Quotes Card - Style amélioré avec dégradé et ombre colorée */}
+        <div className="bg-white bg-gradient-to-br from-white to-amber-50 rounded-xl shadow-md hover:shadow-lg hover:shadow-amber-100 p-6 border border-amber-100 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-br from-amber-400 to-amber-600 text-white p-4 rounded-lg shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-5">
+              <h3 className="text-sm font-medium text-amber-600">En attente</h3>
+              {loading ? (
+                <Skeleton className="h-8 w-12" />
+              ) : (
+                <p className="text-2xl font-bold text-gray-900">{displayStats.pendingQuotes}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Approved Quotes Card - Style amélioré avec dégradé et ombre colorée */}
+        <div className="bg-white bg-gradient-to-br from-white to-emerald-50 rounded-xl shadow-md hover:shadow-lg hover:shadow-emerald-100 p-6 border border-emerald-100 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white p-4 rounded-lg shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-5">
+              <h3 className="text-sm font-medium text-emerald-600">Approuvés</h3>
+              {loading ? (
+                <Skeleton className="h-8 w-12" />
+              ) : (
+                <p className="text-2xl font-bold text-gray-900">{displayStats.approvedQuotes}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Total Revenue Card - Style amélioré avec dégradé et ombre colorée */}
+        <div className="bg-white bg-gradient-to-br from-white to-pink-50 rounded-xl shadow-md hover:shadow-lg hover:shadow-pink-100 p-6 border border-pink-100 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-br from-pink-400 to-pink-600 text-white p-4 rounded-lg shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <h3 className="text-sm font-medium text-gray-500">Chiffre d'affaires</h3>
+              {loading ? (
+                <Skeleton className="h-8 w-24" />
+              ) : (
+                <p className="text-2xl font-bold text-gray-900">{formatCurrency(displayStats.totalRevenue)}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Quotes - Design amélioré */}
+      <div className="bg-white bg-gradient-to-br from-white to-indigo-50/30 rounded-xl shadow-md border border-indigo-100 overflow-hidden transition-all duration-300 hover:shadow-lg">
+        <div className="px-6 py-5 border-b border-indigo-200 flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-indigo-900">Devis récents</h2>
+          <Link
+            href="/dashboard/quotes"
+            className="text-sm font-medium text-indigo-600 hover:text-indigo-800 flex items-center transition-colors duration-200 hover:bg-indigo-100/50 px-3 py-1 rounded-md"
+          >
+            Voir tous
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-indigo-100">
+            <thead className="bg-indigo-50/50">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">N° Devis</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Client</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Montant</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Date</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Statut</th>
+                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-indigo-700 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-indigo-50">
+              {loading ? (
+                // Afficher des squelettes pendant le chargement
+                Array(4).fill(0).map((_, index) => (
+                  <tr key={`skeleton-row-${index}`}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton className="h-5 w-24" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton className="h-5 w-32" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton className="h-5 w-20" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton className="h-5 w-24" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton className="h-5 w-16 rounded-full" />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <div className="flex justify-end space-x-2">
+                        <Skeleton className="h-7 w-12 rounded-md" />
+                        <Skeleton className="h-7 w-16 rounded-md" />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : displayQuotes.length > 0 ? (
+                displayQuotes.map((quote) => (
+                  <tr key={quote.id} className="hover:bg-indigo-50/50 transition-colors duration-150">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-900">{quote.quoteNumber}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{quote.clientName}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{formatCurrency(quote.totalAmount)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{formatDate(quote.createdAt)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm ${getStatusBadgeColor(quote.status)}`}>
+                        {getStatusLabel(quote.status)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Link href={`/dashboard/quotes/${quote.id}`} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-md mr-2 transition-colors duration-200">
+                        Voir
+                      </Link>
+                      <Link href={`/dashboard/quotes/${quote.id}/edit`} className="text-pink-600 hover:text-pink-900 bg-pink-50 hover:bg-pink-100 px-3 py-1 rounded-md transition-colors duration-200">
+                        Modifier
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                    Aucun devis trouvé
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="mt-8">
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Actions rapides</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            href="/dashboard/quotes/new"
+            className="bg-white hover:bg-gray-50 rounded-lg shadow p-6 flex items-center transition-colors"
+          >
+            <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <h3 className="font-medium text-gray-900">Créer un devis</h3>
+              <p className="text-sm text-gray-500">Générez un nouveau devis pour un client</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/dashboard/clients"
+            className="bg-white hover:bg-gray-50 rounded-lg shadow p-6 flex items-center transition-colors"
+          >
+            <div className="bg-green-100 text-green-600 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <h3 className="font-medium text-gray-900">Gérer les clients</h3>
+              <p className="text-sm text-gray-500">Consultez et modifiez vos clients</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/dashboard/settings"
+            className="bg-white hover:bg-gray-50 rounded-lg shadow p-6 flex items-center transition-colors"
+          >
+            <div className="bg-purple-100 text-purple-600 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.379.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div className="ml-4">
+              <h3 className="font-medium text-gray-900">Paramètres</h3>
+              <p className="text-sm text-gray-500">Personnalisez votre compte et vos devis</p>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
