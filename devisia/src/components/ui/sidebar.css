@@ -1,0 +1,78 @@
+/* Styles de la sidebar basés sur le thème global */
+:root {
+  --sidebar-bg: #f9fafb;
+  --sidebar-bg-dark: #1f2937;
+  --sidebar-hover: #eef2ff;
+  --sidebar-border: #e0e7ff;
+  --sidebar-text: #111827;
+  --sidebar-text-dark: #f9fafb;
+  --sidebar-active: #6366f1;
+  --sidebar-active-text: #ffffff;
+  --sidebar-width: 16rem;
+  --sidebar-width-collapsed: 3rem;
+  --sidebar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --sidebar-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Structure principale */
+.sidebar-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Style de la sidebar */
+[data-slot="sidebar"] {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border-right: 1px solid var(--sidebar-border);
+  height: 100%;
+  transition: width var(--sidebar-transition), transform var(--sidebar-transition);
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+}
+
+/* Style pour le contenu principal */
+[data-slot="sidebar-inset"] {
+  flex: 1;
+  transition: margin-left var(--sidebar-transition);
+}
+
+/* Ajustements pour la sidebar collapsée */
+[data-state="collapsed"] [data-slot="sidebar"] {
+  width: var(--sidebar-width-collapsed);
+}
+
+/* Pour le mode mobile */
+@media (max-width: 768px) {
+  [data-slot="sidebar"] {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+    transform: translateX(0);
+  }
+  
+  [data-state="collapsed"] [data-slot="sidebar"] {
+    transform: translateX(-100%);
+  }
+}
+
+.dark .sidebar-wrapper {
+  background-color: var(--sidebar-bg-dark);
+  color: var(--sidebar-text-dark);
+}
+
+.sidebar-item {
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.sidebar-item:hover {
+  background-color: var(--sidebar-hover);
+}
+
+.sidebar-item.active {
+  background-color: var(--sidebar-active);
+  color: var(--sidebar-active-text);
+}

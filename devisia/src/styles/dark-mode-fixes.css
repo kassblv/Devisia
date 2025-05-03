@@ -1,0 +1,52 @@
+/* Améliorations du contraste en mode sombre */
+
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700 {
+  color: rgb(209 213 219); /* text-gray-300 */
+}
+
+.dark .text-indigo-600,
+.dark .text-indigo-700,
+.dark .text-indigo-800,
+.dark .text-indigo-900 {
+  color: rgb(199 210 254); /* text-indigo-200 */
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: rgb(55 65 81); /* bg-gray-700 */
+  color: white;
+  border-color: rgb(75 85 99); /* border-gray-600 */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+.dark select::placeholder {
+  color: rgb(156 163 175); /* text-gray-400 */
+}
+
+.dark .bg-white {
+  background-color: rgb(31 41 55); /* bg-gray-800 */
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-indigo-100 {
+  border-color: rgb(75 85 99); /* border-gray-600 */
+}
+
+.dark .hover\:bg-gray-50:hover {
+  background-color: rgb(55 65 81); /* bg-gray-700 */
+}
+
+/* Assurer une meilleure visibilité des labels */
+.dark label {
+  color: rgb(199 210 254); /* text-indigo-200 */
+}
+
+/* Améliorer le contraste des boutons de navigation */
+.dark .text-current {
+  color: currentColor;
+}

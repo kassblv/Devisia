@@ -1,127 +1,92 @@
-import React from 'react';
+import * as React from "react"
 
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-  padding?: 'none' | 'sm' | 'md' | 'lg';
-  border?: boolean;
-  shadow?: 'none' | 'sm' | 'md' | 'lg';
-  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  hover?: boolean;
+import { cn } from "@/lib/utils"
+
+function Card({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card"
+      className={cn(
+        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-interface CardHeaderProps {
-  children: React.ReactNode;
-  className?: string;
-  divider?: boolean;
+function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-header"
+      className={cn(
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 dark:border-gray-700",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-interface CardFooterProps {
-  children: React.ReactNode;
-  className?: string;
-  divider?: boolean;
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-title"
+      className={cn("leading-none font-semibold dark:text-white", className)}
+      {...props}
+    />
+  )
 }
 
-/**
- * Composant Card utilisant le thème Devisia
- * 
- * Utilisation:
- * ```tsx
- * <Card>
- *   <CardHeader>Titre de la carte</CardHeader>
- *   <p>Contenu de la carte</p>
- *   <CardFooter>Pied de la carte</CardFooter>
- * </Card>
- * ```
- */
-export const Card: React.FC<CardProps> = ({
-  children,
-  className = '',
-  padding = 'md',
-  border = true,
-  shadow = 'md',
-  rounded = 'md',
-  hover = false,
-}) => {
-  // Classes de base avec fond blanc ou fond légèrement teinté
-  const baseClasses = 'bg-white backdrop-blur-sm';
-  
-  // Options de rembourrage plus spacieuses
-  const paddingClasses = {
-    none: '',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-  };
-  
-  // Ombres améliorées avec une teinte de couleur
-  const shadowClasses = {
-    none: '',
-    sm: 'shadow-sm',
-    md: 'shadow hover:shadow-indigo-50',
-    lg: 'shadow-lg hover:shadow-indigo-100',
-  };
-  
-  // Bords plus arrondis pour un look moderne
-  const roundedClasses = {
-    none: '',
-    sm: 'rounded-md',
-    md: 'rounded-lg',
-    lg: 'rounded-xl',
-    xl: 'rounded-2xl',
-  };
-  
-  // Bordure subtile avec une teinte de couleur indigo très légère
-  const borderClasses = border ? 'border border-indigo-50' : '';
-  const hoverClasses = hover ? 'transition-all duration-normal hover:shadow-lg' : '';
-  
-  const classes = [
-    baseClasses,
-    paddingClasses[padding],
-    shadowClasses[shadow],
-    roundedClasses[rounded],
-    borderClasses,
-    hoverClasses,
-    className,
-  ].join(' ');
-  
+function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div className={classes}>
-      {children}
-    </div>
-  );
-};
+    <div
+      data-slot="card-description"
+      className={cn("text-muted-foreground text-sm dark:text-gray-300", className)}
+      {...props}
+    />
+  )
+}
 
-/**
- * En-tête de carte
- */
-export const CardHeader: React.FC<CardHeaderProps> = ({
-  children,
-  className = '',
-  divider = true,
-}) => {
-  const dividerClass = divider ? 'border-b border-gray-200 mb-4' : '';
-  
+function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div className={`${dividerClass} pb-4 ${className}`}>
-      {children}
-    </div>
-  );
-};
+    <div
+      data-slot="card-action"
+      className={cn(
+        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
-/**
- * Pied de carte
- */
-export const CardFooter: React.FC<CardFooterProps> = ({
-  children,
-  className = '',
-  divider = true,
-}) => {
-  const dividerClass = divider ? 'border-t border-gray-200 mt-4' : '';
-  
+function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div className={`${dividerClass} pt-4 ${className}`}>
-      {children}
-    </div>
-  );
-};
+    <div
+      data-slot="card-content"
+      className={cn("px-6", className)}
+      {...props}
+    />
+  )
+}
+
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+      {...props}
+    />
+  )
+}
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+}

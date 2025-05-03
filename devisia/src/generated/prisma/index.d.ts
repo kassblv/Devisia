@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Client
+ * 
+ */
+export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
+/**
  * Model Quote
  * 
  */
@@ -182,6 +187,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.client`: Exposes CRUD operations for the **Client** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Clients
+    * const clients = await prisma.client.findMany()
+    * ```
+    */
+  get client(): Prisma.ClientDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.quote`: Exposes CRUD operations for the **Quote** model.
@@ -643,6 +658,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Client: 'Client',
     Quote: 'Quote',
     QuoteItem: 'QuoteItem'
   };
@@ -663,7 +679,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "quote" | "quoteItem"
+      modelProps: "user" | "client" | "quote" | "quoteItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -738,6 +754,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Client: {
+        payload: Prisma.$ClientPayload<ExtArgs>
+        fields: Prisma.ClientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findFirst: {
+            args: Prisma.ClientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findMany: {
+            args: Prisma.ClientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          create: {
+            args: Prisma.ClientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          createMany: {
+            args: Prisma.ClientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          delete: {
+            args: Prisma.ClientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          update: {
+            args: Prisma.ClientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ClientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          upsert: {
+            args: Prisma.ClientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          aggregate: {
+            args: Prisma.ClientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClient>
+          }
+          groupBy: {
+            args: Prisma.ClientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClientCountArgs<ExtArgs>
+            result: $Utils.Optional<ClientCountAggregateOutputType> | number
           }
         }
       }
@@ -974,6 +1064,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    client?: ClientOmit
     quote?: QuoteOmit
     quoteItem?: QuoteItemOmit
   }
@@ -1071,10 +1162,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     quotes: number
+    clients: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quotes?: boolean | UserCountOutputTypeCountQuotesArgs
+    clients?: boolean | UserCountOutputTypeCountClientsArgs
   }
 
   // Custom InputTypes
@@ -1092,6 +1185,44 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountQuotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuoteWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClientWhereInput
+  }
+
+
+  /**
+   * Count Type ClientCountOutputType
+   */
+
+  export type ClientCountOutputType = {
+    quotes: number
+  }
+
+  export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    quotes?: boolean | ClientCountOutputTypeCountQuotesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClientCountOutputType
+     */
+    select?: ClientCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountQuotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: QuoteWhereInput
   }
 
@@ -1320,6 +1451,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     quotes?: boolean | User$quotesArgs<ExtArgs>
+    clients?: boolean | User$clientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1359,6 +1491,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "firstName" | "lastName" | "companyName" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quotes?: boolean | User$quotesArgs<ExtArgs>
+    clients?: boolean | User$clientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1368,6 +1501,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       quotes: Prisma.$QuotePayload<ExtArgs>[]
+      clients: Prisma.$ClientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1773,6 +1907,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     quotes<T extends User$quotesArgs<ExtArgs> = {}>(args?: Subset<T, User$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2222,6 +2357,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.clients
+   */
+  export type User$clientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    cursor?: ClientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2237,6 +2396,1185 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Client
+   */
+
+  export type AggregateClient = {
+    _count: ClientCountAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  export type ClientMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    phone: string | null
+    company: string | null
+    address: string | null
+    kbis: string | null
+    vatNumber: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type ClientMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    phone: string | null
+    company: string | null
+    address: string | null
+    kbis: string | null
+    vatNumber: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type ClientCountAggregateOutputType = {
+    id: number
+    name: number
+    email: number
+    phone: number
+    company: number
+    address: number
+    kbis: number
+    vatNumber: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type ClientMinAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phone?: true
+    company?: true
+    address?: true
+    kbis?: true
+    vatNumber?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type ClientMaxAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phone?: true
+    company?: true
+    address?: true
+    kbis?: true
+    vatNumber?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type ClientCountAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phone?: true
+    company?: true
+    address?: true
+    kbis?: true
+    vatNumber?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type ClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Client to aggregate.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Clients
+    **/
+    _count?: true | ClientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type GetClientAggregateType<T extends ClientAggregateArgs> = {
+        [P in keyof T & keyof AggregateClient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClient[P]>
+      : GetScalarType<T[P], AggregateClient[P]>
+  }
+
+
+
+
+  export type ClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClientWhereInput
+    orderBy?: ClientOrderByWithAggregationInput | ClientOrderByWithAggregationInput[]
+    by: ClientScalarFieldEnum[] | ClientScalarFieldEnum
+    having?: ClientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClientCountAggregateInputType | true
+    _min?: ClientMinAggregateInputType
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type ClientGroupByOutputType = {
+    id: string
+    name: string
+    email: string
+    phone: string | null
+    company: string | null
+    address: string | null
+    kbis: string | null
+    vatNumber: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    _count: ClientCountAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  type GetClientGroupByPayload<T extends ClientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClientGroupByOutputType[P]>
+            : GetScalarType<T[P], ClientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    company?: boolean
+    address?: boolean
+    kbis?: boolean
+    vatNumber?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    quotes?: boolean | Client$quotesArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    company?: boolean
+    address?: boolean
+    kbis?: boolean
+    vatNumber?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    company?: boolean
+    address?: boolean
+    kbis?: boolean
+    vatNumber?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectScalar = {
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    company?: boolean
+    address?: boolean
+    kbis?: boolean
+    vatNumber?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "address" | "kbis" | "vatNumber" | "notes" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["client"]>
+  export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    quotes?: boolean | Client$quotesArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Client"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      quotes: Prisma.$QuotePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      email: string
+      phone: string | null
+      company: string | null
+      address: string | null
+      kbis: string | null
+      vatNumber: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+      userId: string
+    }, ExtArgs["result"]["client"]>
+    composites: {}
+  }
+
+  type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
+
+  type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ClientCountAggregateInputType | true
+    }
+
+  export interface ClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Client'], meta: { name: 'Client' } }
+    /**
+     * Find zero or one Client that matches the filter.
+     * @param {ClientFindUniqueArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClientFindUniqueArgs>(args: SelectSubset<T, ClientFindUniqueArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Client that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClientFindUniqueOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClientFindUniqueOrThrowArgs>(args: SelectSubset<T, ClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClientFindFirstArgs>(args?: SelectSubset<T, ClientFindFirstArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClientFindFirstOrThrowArgs>(args?: SelectSubset<T, ClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Clients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Clients
+     * const clients = await prisma.client.findMany()
+     * 
+     * // Get first 10 Clients
+     * const clients = await prisma.client.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const clientWithIdOnly = await prisma.client.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ClientFindManyArgs>(args?: SelectSubset<T, ClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Client.
+     * @param {ClientCreateArgs} args - Arguments to create a Client.
+     * @example
+     * // Create one Client
+     * const Client = await prisma.client.create({
+     *   data: {
+     *     // ... data to create a Client
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClientCreateArgs>(args: SelectSubset<T, ClientCreateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Clients.
+     * @param {ClientCreateManyArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClientCreateManyArgs>(args?: SelectSubset<T, ClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Clients and returns the data saved in the database.
+     * @param {ClientCreateManyAndReturnArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClientCreateManyAndReturnArgs>(args?: SelectSubset<T, ClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Client.
+     * @param {ClientDeleteArgs} args - Arguments to delete one Client.
+     * @example
+     * // Delete one Client
+     * const Client = await prisma.client.delete({
+     *   where: {
+     *     // ... filter to delete one Client
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClientDeleteArgs>(args: SelectSubset<T, ClientDeleteArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Client.
+     * @param {ClientUpdateArgs} args - Arguments to update one Client.
+     * @example
+     * // Update one Client
+     * const client = await prisma.client.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClientUpdateArgs>(args: SelectSubset<T, ClientUpdateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Clients.
+     * @param {ClientDeleteManyArgs} args - Arguments to filter Clients to delete.
+     * @example
+     * // Delete a few Clients
+     * const { count } = await prisma.client.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClientDeleteManyArgs>(args?: SelectSubset<T, ClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClientUpdateManyArgs>(args: SelectSubset<T, ClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients and returns the data updated in the database.
+     * @param {ClientUpdateManyAndReturnArgs} args - Arguments to update many Clients.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ClientUpdateManyAndReturnArgs>(args: SelectSubset<T, ClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Client.
+     * @param {ClientUpsertArgs} args - Arguments to update or create a Client.
+     * @example
+     * // Update or create a Client
+     * const client = await prisma.client.upsert({
+     *   create: {
+     *     // ... data to create a Client
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Client we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClientUpsertArgs>(args: SelectSubset<T, ClientUpsertArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientCountArgs} args - Arguments to filter Clients to count.
+     * @example
+     * // Count the number of Clients
+     * const count = await prisma.client.count({
+     *   where: {
+     *     // ... the filter for the Clients we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClientCountArgs>(
+      args?: Subset<T, ClientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClientAggregateArgs>(args: Subset<T, ClientAggregateArgs>): Prisma.PrismaPromise<GetClientAggregateType<T>>
+
+    /**
+     * Group by Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClientGroupByArgs['orderBy'] }
+        : { orderBy?: ClientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Client model
+   */
+  readonly fields: ClientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Client.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    quotes<T extends Client$quotesArgs<ExtArgs> = {}>(args?: Subset<T, Client$quotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Client model
+   */
+  interface ClientFieldRefs {
+    readonly id: FieldRef<"Client", 'String'>
+    readonly name: FieldRef<"Client", 'String'>
+    readonly email: FieldRef<"Client", 'String'>
+    readonly phone: FieldRef<"Client", 'String'>
+    readonly company: FieldRef<"Client", 'String'>
+    readonly address: FieldRef<"Client", 'String'>
+    readonly kbis: FieldRef<"Client", 'String'>
+    readonly vatNumber: FieldRef<"Client", 'String'>
+    readonly notes: FieldRef<"Client", 'String'>
+    readonly createdAt: FieldRef<"Client", 'DateTime'>
+    readonly updatedAt: FieldRef<"Client", 'DateTime'>
+    readonly userId: FieldRef<"Client", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Client findUnique
+   */
+  export type ClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findUniqueOrThrow
+   */
+  export type ClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findFirst
+   */
+  export type ClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findFirstOrThrow
+   */
+  export type ClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findMany
+   */
+  export type ClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Clients to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client create
+   */
+  export type ClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Client.
+     */
+    data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+  }
+
+  /**
+   * Client createMany
+   */
+  export type ClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Client createManyAndReturn
+   */
+  export type ClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Client update
+   */
+  export type ClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Client.
+     */
+    data: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+    /**
+     * Choose, which Client to update.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client updateMany
+   */
+  export type ClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client updateManyAndReturn
+   */
+  export type ClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Client upsert
+   */
+  export type ClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Client to update in case it exists.
+     */
+    where: ClientWhereUniqueInput
+    /**
+     * In case the Client found by the `where` argument doesn't exist, create a new Client with this data.
+     */
+    create: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+    /**
+     * In case the Client was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+  }
+
+  /**
+   * Client delete
+   */
+  export type ClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter which Client to delete.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client deleteMany
+   */
+  export type ClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Clients to delete
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client.quotes
+   */
+  export type Client$quotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Quote
+     */
+    select?: QuoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Quote
+     */
+    omit?: QuoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuoteInclude<ExtArgs> | null
+    where?: QuoteWhereInput
+    orderBy?: QuoteOrderByWithRelationInput | QuoteOrderByWithRelationInput[]
+    cursor?: QuoteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuoteScalarFieldEnum | QuoteScalarFieldEnum[]
+  }
+
+  /**
+   * Client without action
+   */
+  export type ClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
   }
 
 
@@ -2263,10 +3601,6 @@ export namespace Prisma {
   export type QuoteMinAggregateOutputType = {
     id: string | null
     quoteNumber: string | null
-    clientName: string | null
-    clientEmail: string | null
-    clientCompany: string | null
-    clientPhone: string | null
     totalAmount: Decimal | null
     status: $Enums.QuoteStatus | null
     expiryDate: Date | null
@@ -2274,15 +3608,16 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    clientId: string | null
+    clientName: string | null
+    clientEmail: string | null
+    clientCompany: string | null
+    clientPhone: string | null
   }
 
   export type QuoteMaxAggregateOutputType = {
     id: string | null
     quoteNumber: string | null
-    clientName: string | null
-    clientEmail: string | null
-    clientCompany: string | null
-    clientPhone: string | null
     totalAmount: Decimal | null
     status: $Enums.QuoteStatus | null
     expiryDate: Date | null
@@ -2290,15 +3625,16 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    clientId: string | null
+    clientName: string | null
+    clientEmail: string | null
+    clientCompany: string | null
+    clientPhone: string | null
   }
 
   export type QuoteCountAggregateOutputType = {
     id: number
     quoteNumber: number
-    clientName: number
-    clientEmail: number
-    clientCompany: number
-    clientPhone: number
     totalAmount: number
     status: number
     expiryDate: number
@@ -2306,6 +3642,11 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    clientId: number
+    clientName: number
+    clientEmail: number
+    clientCompany: number
+    clientPhone: number
     _all: number
   }
 
@@ -2321,10 +3662,6 @@ export namespace Prisma {
   export type QuoteMinAggregateInputType = {
     id?: true
     quoteNumber?: true
-    clientName?: true
-    clientEmail?: true
-    clientCompany?: true
-    clientPhone?: true
     totalAmount?: true
     status?: true
     expiryDate?: true
@@ -2332,15 +3669,16 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    clientId?: true
+    clientName?: true
+    clientEmail?: true
+    clientCompany?: true
+    clientPhone?: true
   }
 
   export type QuoteMaxAggregateInputType = {
     id?: true
     quoteNumber?: true
-    clientName?: true
-    clientEmail?: true
-    clientCompany?: true
-    clientPhone?: true
     totalAmount?: true
     status?: true
     expiryDate?: true
@@ -2348,15 +3686,16 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    clientId?: true
+    clientName?: true
+    clientEmail?: true
+    clientCompany?: true
+    clientPhone?: true
   }
 
   export type QuoteCountAggregateInputType = {
     id?: true
     quoteNumber?: true
-    clientName?: true
-    clientEmail?: true
-    clientCompany?: true
-    clientPhone?: true
     totalAmount?: true
     status?: true
     expiryDate?: true
@@ -2364,6 +3703,11 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    clientId?: true
+    clientName?: true
+    clientEmail?: true
+    clientCompany?: true
+    clientPhone?: true
     _all?: true
   }
 
@@ -2456,10 +3800,6 @@ export namespace Prisma {
   export type QuoteGroupByOutputType = {
     id: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany: string | null
-    clientPhone: string | null
     totalAmount: Decimal
     status: $Enums.QuoteStatus
     expiryDate: Date | null
@@ -2467,6 +3807,11 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    clientId: string | null
+    clientName: string | null
+    clientEmail: string | null
+    clientCompany: string | null
+    clientPhone: string | null
     _count: QuoteCountAggregateOutputType | null
     _avg: QuoteAvgAggregateOutputType | null
     _sum: QuoteSumAggregateOutputType | null
@@ -2491,10 +3836,6 @@ export namespace Prisma {
   export type QuoteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     quoteNumber?: boolean
-    clientName?: boolean
-    clientEmail?: boolean
-    clientCompany?: boolean
-    clientPhone?: boolean
     totalAmount?: boolean
     status?: boolean
     expiryDate?: boolean
@@ -2502,7 +3843,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    clientId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    clientCompany?: boolean
+    clientPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
     items?: boolean | Quote$itemsArgs<ExtArgs>
     _count?: boolean | QuoteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["quote"]>
@@ -2510,10 +3857,6 @@ export namespace Prisma {
   export type QuoteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     quoteNumber?: boolean
-    clientName?: boolean
-    clientEmail?: boolean
-    clientCompany?: boolean
-    clientPhone?: boolean
     totalAmount?: boolean
     status?: boolean
     expiryDate?: boolean
@@ -2521,16 +3864,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    clientId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    clientCompany?: boolean
+    clientPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
   }, ExtArgs["result"]["quote"]>
 
   export type QuoteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     quoteNumber?: boolean
-    clientName?: boolean
-    clientEmail?: boolean
-    clientCompany?: boolean
-    clientPhone?: boolean
     totalAmount?: boolean
     status?: boolean
     expiryDate?: boolean
@@ -2538,16 +3883,18 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    clientId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    clientCompany?: boolean
+    clientPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
   }, ExtArgs["result"]["quote"]>
 
   export type QuoteSelectScalar = {
     id?: boolean
     quoteNumber?: boolean
-    clientName?: boolean
-    clientEmail?: boolean
-    clientCompany?: boolean
-    clientPhone?: boolean
     totalAmount?: boolean
     status?: boolean
     expiryDate?: boolean
@@ -2555,34 +3902,39 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    clientId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    clientCompany?: boolean
+    clientPhone?: boolean
   }
 
-  export type QuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quoteNumber" | "clientName" | "clientEmail" | "clientCompany" | "clientPhone" | "totalAmount" | "status" | "expiryDate" | "notes" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["quote"]>
+  export type QuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quoteNumber" | "totalAmount" | "status" | "expiryDate" | "notes" | "createdAt" | "updatedAt" | "userId" | "clientId" | "clientName" | "clientEmail" | "clientCompany" | "clientPhone", ExtArgs["result"]["quote"]>
   export type QuoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
     items?: boolean | Quote$itemsArgs<ExtArgs>
     _count?: boolean | QuoteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type QuoteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
   }
   export type QuoteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    client?: boolean | Quote$clientArgs<ExtArgs>
   }
 
   export type $QuotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Quote"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      client: Prisma.$ClientPayload<ExtArgs> | null
       items: Prisma.$QuoteItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       quoteNumber: string
-      clientName: string
-      clientEmail: string
-      clientCompany: string | null
-      clientPhone: string | null
       totalAmount: Prisma.Decimal
       status: $Enums.QuoteStatus
       expiryDate: Date | null
@@ -2590,6 +3942,11 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      clientId: string | null
+      clientName: string | null
+      clientEmail: string | null
+      clientCompany: string | null
+      clientPhone: string | null
     }, ExtArgs["result"]["quote"]>
     composites: {}
   }
@@ -2985,6 +4342,7 @@ export namespace Prisma {
   export interface Prisma__QuoteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    client<T extends Quote$clientArgs<ExtArgs> = {}>(args?: Subset<T, Quote$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends Quote$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Quote$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuoteItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3017,10 +4375,6 @@ export namespace Prisma {
   interface QuoteFieldRefs {
     readonly id: FieldRef<"Quote", 'String'>
     readonly quoteNumber: FieldRef<"Quote", 'String'>
-    readonly clientName: FieldRef<"Quote", 'String'>
-    readonly clientEmail: FieldRef<"Quote", 'String'>
-    readonly clientCompany: FieldRef<"Quote", 'String'>
-    readonly clientPhone: FieldRef<"Quote", 'String'>
     readonly totalAmount: FieldRef<"Quote", 'Decimal'>
     readonly status: FieldRef<"Quote", 'QuoteStatus'>
     readonly expiryDate: FieldRef<"Quote", 'DateTime'>
@@ -3028,6 +4382,11 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Quote", 'DateTime'>
     readonly updatedAt: FieldRef<"Quote", 'DateTime'>
     readonly userId: FieldRef<"Quote", 'String'>
+    readonly clientId: FieldRef<"Quote", 'String'>
+    readonly clientName: FieldRef<"Quote", 'String'>
+    readonly clientEmail: FieldRef<"Quote", 'String'>
+    readonly clientCompany: FieldRef<"Quote", 'String'>
+    readonly clientPhone: FieldRef<"Quote", 'String'>
   }
     
 
@@ -3421,6 +4780,25 @@ export namespace Prisma {
      * Limit how many Quotes to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Quote.client
+   */
+  export type Quote$clientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
   }
 
   /**
@@ -4633,20 +6011,39 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const ClientScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    phone: 'phone',
+    company: 'company',
+    address: 'address',
+    kbis: 'kbis',
+    vatNumber: 'vatNumber',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
   export const QuoteScalarFieldEnum: {
     id: 'id',
     quoteNumber: 'quoteNumber',
-    clientName: 'clientName',
-    clientEmail: 'clientEmail',
-    clientCompany: 'clientCompany',
-    clientPhone: 'clientPhone',
     totalAmount: 'totalAmount',
     status: 'status',
     expiryDate: 'expiryDate',
     notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    clientId: 'clientId',
+    clientName: 'clientName',
+    clientEmail: 'clientEmail',
+    clientCompany: 'clientCompany',
+    clientPhone: 'clientPhone'
   };
 
   export type QuoteScalarFieldEnum = (typeof QuoteScalarFieldEnum)[keyof typeof QuoteScalarFieldEnum]
@@ -4795,6 +6192,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     quotes?: QuoteListRelationFilter
+    clients?: ClientListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4807,6 +6205,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     quotes?: QuoteOrderByRelationAggregateInput
+    clients?: ClientOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4822,6 +6221,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     quotes?: QuoteListRelationFilter
+    clients?: ClientListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4852,16 +6252,105 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
+  export type ClientWhereInput = {
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    id?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
+    company?: StringNullableFilter<"Client"> | string | null
+    address?: StringNullableFilter<"Client"> | string | null
+    kbis?: StringNullableFilter<"Client"> | string | null
+    vatNumber?: StringNullableFilter<"Client"> | string | null
+    notes?: StringNullableFilter<"Client"> | string | null
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    userId?: StringFilter<"Client"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    quotes?: QuoteListRelationFilter
+  }
+
+  export type ClientOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    kbis?: SortOrderInput | SortOrder
+    vatNumber?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    quotes?: QuoteOrderByRelationAggregateInput
+  }
+
+  export type ClientWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
+    company?: StringNullableFilter<"Client"> | string | null
+    address?: StringNullableFilter<"Client"> | string | null
+    kbis?: StringNullableFilter<"Client"> | string | null
+    vatNumber?: StringNullableFilter<"Client"> | string | null
+    notes?: StringNullableFilter<"Client"> | string | null
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    userId?: StringFilter<"Client"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    quotes?: QuoteListRelationFilter
+  }, "id">
+
+  export type ClientOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    company?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    kbis?: SortOrderInput | SortOrder
+    vatNumber?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: ClientCountOrderByAggregateInput
+    _max?: ClientMaxOrderByAggregateInput
+    _min?: ClientMinOrderByAggregateInput
+  }
+
+  export type ClientScalarWhereWithAggregatesInput = {
+    AND?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    OR?: ClientScalarWhereWithAggregatesInput[]
+    NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Client"> | string
+    name?: StringWithAggregatesFilter<"Client"> | string
+    email?: StringWithAggregatesFilter<"Client"> | string
+    phone?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    company?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    address?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    kbis?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    vatNumber?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    userId?: StringWithAggregatesFilter<"Client"> | string
+  }
+
   export type QuoteWhereInput = {
     AND?: QuoteWhereInput | QuoteWhereInput[]
     OR?: QuoteWhereInput[]
     NOT?: QuoteWhereInput | QuoteWhereInput[]
     id?: StringFilter<"Quote"> | string
     quoteNumber?: StringFilter<"Quote"> | string
-    clientName?: StringFilter<"Quote"> | string
-    clientEmail?: StringFilter<"Quote"> | string
-    clientCompany?: StringNullableFilter<"Quote"> | string | null
-    clientPhone?: StringNullableFilter<"Quote"> | string | null
     totalAmount?: DecimalFilter<"Quote"> | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFilter<"Quote"> | $Enums.QuoteStatus
     expiryDate?: DateTimeNullableFilter<"Quote"> | Date | string | null
@@ -4869,17 +6358,19 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Quote"> | Date | string
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
+    clientId?: StringNullableFilter<"Quote"> | string | null
+    clientName?: StringNullableFilter<"Quote"> | string | null
+    clientEmail?: StringNullableFilter<"Quote"> | string | null
+    clientCompany?: StringNullableFilter<"Quote"> | string | null
+    clientPhone?: StringNullableFilter<"Quote"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     items?: QuoteItemListRelationFilter
   }
 
   export type QuoteOrderByWithRelationInput = {
     id?: SortOrder
     quoteNumber?: SortOrder
-    clientName?: SortOrder
-    clientEmail?: SortOrder
-    clientCompany?: SortOrderInput | SortOrder
-    clientPhone?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
     status?: SortOrder
     expiryDate?: SortOrderInput | SortOrder
@@ -4887,7 +6378,13 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    clientName?: SortOrderInput | SortOrder
+    clientEmail?: SortOrderInput | SortOrder
+    clientCompany?: SortOrderInput | SortOrder
+    clientPhone?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
+    client?: ClientOrderByWithRelationInput
     items?: QuoteItemOrderByRelationAggregateInput
   }
 
@@ -4897,10 +6394,6 @@ export namespace Prisma {
     AND?: QuoteWhereInput | QuoteWhereInput[]
     OR?: QuoteWhereInput[]
     NOT?: QuoteWhereInput | QuoteWhereInput[]
-    clientName?: StringFilter<"Quote"> | string
-    clientEmail?: StringFilter<"Quote"> | string
-    clientCompany?: StringNullableFilter<"Quote"> | string | null
-    clientPhone?: StringNullableFilter<"Quote"> | string | null
     totalAmount?: DecimalFilter<"Quote"> | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFilter<"Quote"> | $Enums.QuoteStatus
     expiryDate?: DateTimeNullableFilter<"Quote"> | Date | string | null
@@ -4908,17 +6401,19 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Quote"> | Date | string
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
+    clientId?: StringNullableFilter<"Quote"> | string | null
+    clientName?: StringNullableFilter<"Quote"> | string | null
+    clientEmail?: StringNullableFilter<"Quote"> | string | null
+    clientCompany?: StringNullableFilter<"Quote"> | string | null
+    clientPhone?: StringNullableFilter<"Quote"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     items?: QuoteItemListRelationFilter
   }, "id" | "quoteNumber">
 
   export type QuoteOrderByWithAggregationInput = {
     id?: SortOrder
     quoteNumber?: SortOrder
-    clientName?: SortOrder
-    clientEmail?: SortOrder
-    clientCompany?: SortOrderInput | SortOrder
-    clientPhone?: SortOrderInput | SortOrder
     totalAmount?: SortOrder
     status?: SortOrder
     expiryDate?: SortOrderInput | SortOrder
@@ -4926,6 +6421,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    clientId?: SortOrderInput | SortOrder
+    clientName?: SortOrderInput | SortOrder
+    clientEmail?: SortOrderInput | SortOrder
+    clientCompany?: SortOrderInput | SortOrder
+    clientPhone?: SortOrderInput | SortOrder
     _count?: QuoteCountOrderByAggregateInput
     _avg?: QuoteAvgOrderByAggregateInput
     _max?: QuoteMaxOrderByAggregateInput
@@ -4939,10 +6439,6 @@ export namespace Prisma {
     NOT?: QuoteScalarWhereWithAggregatesInput | QuoteScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Quote"> | string
     quoteNumber?: StringWithAggregatesFilter<"Quote"> | string
-    clientName?: StringWithAggregatesFilter<"Quote"> | string
-    clientEmail?: StringWithAggregatesFilter<"Quote"> | string
-    clientCompany?: StringNullableWithAggregatesFilter<"Quote"> | string | null
-    clientPhone?: StringNullableWithAggregatesFilter<"Quote"> | string | null
     totalAmount?: DecimalWithAggregatesFilter<"Quote"> | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusWithAggregatesFilter<"Quote"> | $Enums.QuoteStatus
     expiryDate?: DateTimeNullableWithAggregatesFilter<"Quote"> | Date | string | null
@@ -4950,6 +6446,11 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Quote"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Quote"> | Date | string
     userId?: StringWithAggregatesFilter<"Quote"> | string
+    clientId?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    clientName?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    clientEmail?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    clientCompany?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    clientPhone?: StringNullableWithAggregatesFilter<"Quote"> | string | null
   }
 
   export type QuoteItemWhereInput = {
@@ -5034,6 +6535,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     quotes?: QuoteCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -5046,6 +6548,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     quotes?: QuoteUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -5058,6 +6561,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quotes?: QuoteUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -5070,6 +6574,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quotes?: QuoteUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5105,30 +6610,135 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ClientCreateInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutClientsInput
+    quotes?: QuoteCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    quotes?: QuoteUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutClientsNestedInput
+    quotes?: QuoteUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    quotes?: QuoteUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientCreateManyInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type ClientUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type QuoteCreateInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
     user: UserCreateNestedOneWithoutQuotesInput
+    client?: ClientCreateNestedOneWithoutQuotesInput
     items?: QuoteItemCreateNestedManyWithoutQuoteInput
   }
 
   export type QuoteUncheckedCreateInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
@@ -5136,33 +6746,35 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    clientId?: string | null
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
     items?: QuoteItemUncheckedCreateNestedManyWithoutQuoteInput
   }
 
   export type QuoteUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutQuotesNestedInput
+    client?: ClientUpdateOneWithoutQuotesNestedInput
     items?: QuoteItemUpdateManyWithoutQuoteNestedInput
   }
 
   export type QuoteUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5170,16 +6782,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     items?: QuoteItemUncheckedUpdateManyWithoutQuoteNestedInput
   }
 
   export type QuoteCreateManyInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
@@ -5187,30 +6800,31 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    clientId?: string | null
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
   }
 
   export type QuoteUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuoteUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5218,6 +6832,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuoteItemCreateInput = {
@@ -5343,12 +6962,22 @@ export namespace Prisma {
     none?: QuoteWhereInput
   }
 
+  export type ClientListRelationFilter = {
+    every?: ClientWhereInput
+    some?: ClientWhereInput
+    none?: ClientWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type QuoteOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ClientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5435,6 +7064,56 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type ClientCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    company?: SortOrder
+    address?: SortOrder
+    kbis?: SortOrder
+    vatNumber?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ClientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    company?: SortOrder
+    address?: SortOrder
+    kbis?: SortOrder
+    vatNumber?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ClientMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    company?: SortOrder
+    address?: SortOrder
+    kbis?: SortOrder
+    vatNumber?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -5464,9 +7143,9 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type ClientNullableScalarRelationFilter = {
+    is?: ClientWhereInput | null
+    isNot?: ClientWhereInput | null
   }
 
   export type QuoteItemListRelationFilter = {
@@ -5482,10 +7161,6 @@ export namespace Prisma {
   export type QuoteCountOrderByAggregateInput = {
     id?: SortOrder
     quoteNumber?: SortOrder
-    clientName?: SortOrder
-    clientEmail?: SortOrder
-    clientCompany?: SortOrder
-    clientPhone?: SortOrder
     totalAmount?: SortOrder
     status?: SortOrder
     expiryDate?: SortOrder
@@ -5493,6 +7168,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    clientId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    clientCompany?: SortOrder
+    clientPhone?: SortOrder
   }
 
   export type QuoteAvgOrderByAggregateInput = {
@@ -5502,10 +7182,6 @@ export namespace Prisma {
   export type QuoteMaxOrderByAggregateInput = {
     id?: SortOrder
     quoteNumber?: SortOrder
-    clientName?: SortOrder
-    clientEmail?: SortOrder
-    clientCompany?: SortOrder
-    clientPhone?: SortOrder
     totalAmount?: SortOrder
     status?: SortOrder
     expiryDate?: SortOrder
@@ -5513,15 +7189,16 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    clientId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    clientCompany?: SortOrder
+    clientPhone?: SortOrder
   }
 
   export type QuoteMinOrderByAggregateInput = {
     id?: SortOrder
     quoteNumber?: SortOrder
-    clientName?: SortOrder
-    clientEmail?: SortOrder
-    clientCompany?: SortOrder
-    clientPhone?: SortOrder
     totalAmount?: SortOrder
     status?: SortOrder
     expiryDate?: SortOrder
@@ -5529,6 +7206,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    clientId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    clientCompany?: SortOrder
+    clientPhone?: SortOrder
   }
 
   export type QuoteSumOrderByAggregateInput = {
@@ -5686,11 +7368,25 @@ export namespace Prisma {
     connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
   }
 
+  export type ClientCreateNestedManyWithoutUserInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+  }
+
   export type QuoteUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<QuoteCreateWithoutUserInput, QuoteUncheckedCreateWithoutUserInput> | QuoteCreateWithoutUserInput[] | QuoteUncheckedCreateWithoutUserInput[]
     connectOrCreate?: QuoteCreateOrConnectWithoutUserInput | QuoteCreateOrConnectWithoutUserInput[]
     createMany?: QuoteCreateManyUserInputEnvelope
     connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+  }
+
+  export type ClientUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5719,6 +7415,20 @@ export namespace Prisma {
     deleteMany?: QuoteScalarWhereInput | QuoteScalarWhereInput[]
   }
 
+  export type ClientUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
+  }
+
   export type QuoteUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<QuoteCreateWithoutUserInput, QuoteUncheckedCreateWithoutUserInput> | QuoteCreateWithoutUserInput[] | QuoteUncheckedCreateWithoutUserInput[]
     connectOrCreate?: QuoteCreateOrConnectWithoutUserInput | QuoteCreateOrConnectWithoutUserInput[]
@@ -5733,10 +7443,86 @@ export namespace Prisma {
     deleteMany?: QuoteScalarWhereInput | QuoteScalarWhereInput[]
   }
 
+  export type ClientUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutClientsInput = {
+    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type QuoteCreateNestedManyWithoutClientInput = {
+    create?: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput> | QuoteCreateWithoutClientInput[] | QuoteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: QuoteCreateOrConnectWithoutClientInput | QuoteCreateOrConnectWithoutClientInput[]
+    createMany?: QuoteCreateManyClientInputEnvelope
+    connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+  }
+
+  export type QuoteUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput> | QuoteCreateWithoutClientInput[] | QuoteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: QuoteCreateOrConnectWithoutClientInput | QuoteCreateOrConnectWithoutClientInput[]
+    createMany?: QuoteCreateManyClientInputEnvelope
+    connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutClientsNestedInput = {
+    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
+    upsert?: UserUpsertWithoutClientsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClientsInput, UserUpdateWithoutClientsInput>, UserUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type QuoteUpdateManyWithoutClientNestedInput = {
+    create?: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput> | QuoteCreateWithoutClientInput[] | QuoteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: QuoteCreateOrConnectWithoutClientInput | QuoteCreateOrConnectWithoutClientInput[]
+    upsert?: QuoteUpsertWithWhereUniqueWithoutClientInput | QuoteUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: QuoteCreateManyClientInputEnvelope
+    set?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    disconnect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    delete?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    update?: QuoteUpdateWithWhereUniqueWithoutClientInput | QuoteUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: QuoteUpdateManyWithWhereWithoutClientInput | QuoteUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: QuoteScalarWhereInput | QuoteScalarWhereInput[]
+  }
+
+  export type QuoteUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput> | QuoteCreateWithoutClientInput[] | QuoteUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: QuoteCreateOrConnectWithoutClientInput | QuoteCreateOrConnectWithoutClientInput[]
+    upsert?: QuoteUpsertWithWhereUniqueWithoutClientInput | QuoteUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: QuoteCreateManyClientInputEnvelope
+    set?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    disconnect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    delete?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    connect?: QuoteWhereUniqueInput | QuoteWhereUniqueInput[]
+    update?: QuoteUpdateWithWhereUniqueWithoutClientInput | QuoteUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: QuoteUpdateManyWithWhereWithoutClientInput | QuoteUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: QuoteScalarWhereInput | QuoteScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutQuotesInput = {
     create?: XOR<UserCreateWithoutQuotesInput, UserUncheckedCreateWithoutQuotesInput>
     connectOrCreate?: UserCreateOrConnectWithoutQuotesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type ClientCreateNestedOneWithoutQuotesInput = {
+    create?: XOR<ClientCreateWithoutQuotesInput, ClientUncheckedCreateWithoutQuotesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutQuotesInput
+    connect?: ClientWhereUniqueInput
   }
 
   export type QuoteItemCreateNestedManyWithoutQuoteInput = {
@@ -5775,6 +7561,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutQuotesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuotesInput, UserUpdateWithoutQuotesInput>, UserUncheckedUpdateWithoutQuotesInput>
+  }
+
+  export type ClientUpdateOneWithoutQuotesNestedInput = {
+    create?: XOR<ClientCreateWithoutQuotesInput, ClientUncheckedCreateWithoutQuotesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutQuotesInput
+    upsert?: ClientUpsertWithoutQuotesInput
+    disconnect?: ClientWhereInput | boolean
+    delete?: ClientWhereInput | boolean
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutQuotesInput, ClientUpdateWithoutQuotesInput>, ClientUncheckedUpdateWithoutQuotesInput>
   }
 
   export type QuoteItemUpdateManyWithoutQuoteNestedInput = {
@@ -6070,32 +7866,34 @@ export namespace Prisma {
   export type QuoteCreateWithoutUserInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
+    client?: ClientCreateNestedOneWithoutQuotesInput
     items?: QuoteItemCreateNestedManyWithoutQuoteInput
   }
 
   export type QuoteUncheckedCreateWithoutUserInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clientId?: string | null
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
     items?: QuoteItemUncheckedCreateNestedManyWithoutQuoteInput
   }
 
@@ -6106,6 +7904,46 @@ export namespace Prisma {
 
   export type QuoteCreateManyUserInputEnvelope = {
     data: QuoteCreateManyUserInput | QuoteCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClientCreateWithoutUserInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quotes?: QuoteCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quotes?: QuoteUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
+  }
+
+  export type ClientCreateManyUserInputEnvelope = {
+    data: ClientCreateManyUserInput | ClientCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -6131,10 +7969,6 @@ export namespace Prisma {
     NOT?: QuoteScalarWhereInput | QuoteScalarWhereInput[]
     id?: StringFilter<"Quote"> | string
     quoteNumber?: StringFilter<"Quote"> | string
-    clientName?: StringFilter<"Quote"> | string
-    clientEmail?: StringFilter<"Quote"> | string
-    clientCompany?: StringNullableFilter<"Quote"> | string | null
-    clientPhone?: StringNullableFilter<"Quote"> | string | null
     totalAmount?: DecimalFilter<"Quote"> | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFilter<"Quote"> | $Enums.QuoteStatus
     expiryDate?: DateTimeNullableFilter<"Quote"> | Date | string | null
@@ -6142,6 +7976,169 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Quote"> | Date | string
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
+    clientId?: StringNullableFilter<"Quote"> | string | null
+    clientName?: StringNullableFilter<"Quote"> | string | null
+    clientEmail?: StringNullableFilter<"Quote"> | string | null
+    clientCompany?: StringNullableFilter<"Quote"> | string | null
+    clientPhone?: StringNullableFilter<"Quote"> | string | null
+  }
+
+  export type ClientUpsertWithWhereUniqueWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    update: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
+    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
+  }
+
+  export type ClientUpdateWithWhereUniqueWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    data: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ClientUpdateManyWithWhereWithoutUserInput = {
+    where: ClientScalarWhereInput
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ClientScalarWhereInput = {
+    AND?: ClientScalarWhereInput | ClientScalarWhereInput[]
+    OR?: ClientScalarWhereInput[]
+    NOT?: ClientScalarWhereInput | ClientScalarWhereInput[]
+    id?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
+    company?: StringNullableFilter<"Client"> | string | null
+    address?: StringNullableFilter<"Client"> | string | null
+    kbis?: StringNullableFilter<"Client"> | string | null
+    vatNumber?: StringNullableFilter<"Client"> | string | null
+    notes?: StringNullableFilter<"Client"> | string | null
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    userId?: StringFilter<"Client"> | string
+  }
+
+  export type UserCreateWithoutClientsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName?: string | null
+    lastName?: string | null
+    companyName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quotes?: QuoteCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutClientsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName?: string | null
+    lastName?: string | null
+    companyName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quotes?: QuoteUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutClientsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+  }
+
+  export type QuoteCreateWithoutClientInput = {
+    id?: string
+    quoteNumber: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.QuoteStatus
+    expiryDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
+    user: UserCreateNestedOneWithoutQuotesInput
+    items?: QuoteItemCreateNestedManyWithoutQuoteInput
+  }
+
+  export type QuoteUncheckedCreateWithoutClientInput = {
+    id?: string
+    quoteNumber: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.QuoteStatus
+    expiryDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
+    items?: QuoteItemUncheckedCreateNestedManyWithoutQuoteInput
+  }
+
+  export type QuoteCreateOrConnectWithoutClientInput = {
+    where: QuoteWhereUniqueInput
+    create: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput>
+  }
+
+  export type QuoteCreateManyClientInputEnvelope = {
+    data: QuoteCreateManyClientInput | QuoteCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutClientsInput = {
+    update: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
+    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutClientsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type UserUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quotes?: QuoteUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quotes?: QuoteUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type QuoteUpsertWithWhereUniqueWithoutClientInput = {
+    where: QuoteWhereUniqueInput
+    update: XOR<QuoteUpdateWithoutClientInput, QuoteUncheckedUpdateWithoutClientInput>
+    create: XOR<QuoteCreateWithoutClientInput, QuoteUncheckedCreateWithoutClientInput>
+  }
+
+  export type QuoteUpdateWithWhereUniqueWithoutClientInput = {
+    where: QuoteWhereUniqueInput
+    data: XOR<QuoteUpdateWithoutClientInput, QuoteUncheckedUpdateWithoutClientInput>
+  }
+
+  export type QuoteUpdateManyWithWhereWithoutClientInput = {
+    where: QuoteScalarWhereInput
+    data: XOR<QuoteUpdateManyMutationInput, QuoteUncheckedUpdateManyWithoutClientInput>
   }
 
   export type UserCreateWithoutQuotesInput = {
@@ -6153,6 +8150,7 @@ export namespace Prisma {
     companyName?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutQuotesInput = {
@@ -6164,11 +8162,47 @@ export namespace Prisma {
     companyName?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutQuotesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutQuotesInput, UserUncheckedCreateWithoutQuotesInput>
+  }
+
+  export type ClientCreateWithoutQuotesInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutClientsInput
+  }
+
+  export type ClientUncheckedCreateWithoutQuotesInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type ClientCreateOrConnectWithoutQuotesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutQuotesInput, ClientUncheckedCreateWithoutQuotesInput>
   }
 
   export type QuoteItemCreateWithoutQuoteInput = {
@@ -6221,6 +8255,7 @@ export namespace Prisma {
     companyName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuotesInput = {
@@ -6232,6 +8267,48 @@ export namespace Prisma {
     companyName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ClientUpsertWithoutQuotesInput = {
+    update: XOR<ClientUpdateWithoutQuotesInput, ClientUncheckedUpdateWithoutQuotesInput>
+    create: XOR<ClientCreateWithoutQuotesInput, ClientUncheckedCreateWithoutQuotesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutQuotesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutQuotesInput, ClientUncheckedUpdateWithoutQuotesInput>
+  }
+
+  export type ClientUpdateWithoutQuotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutClientsNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutQuotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type QuoteItemUpsertWithWhereUniqueWithoutQuoteInput = {
@@ -6267,26 +8344,23 @@ export namespace Prisma {
   export type QuoteCreateWithoutItemsInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
     user: UserCreateNestedOneWithoutQuotesInput
+    client?: ClientCreateNestedOneWithoutQuotesInput
   }
 
   export type QuoteUncheckedCreateWithoutItemsInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
@@ -6294,6 +8368,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    clientId?: string | null
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
   }
 
   export type QuoteCreateOrConnectWithoutItemsInput = {
@@ -6315,26 +8394,23 @@ export namespace Prisma {
   export type QuoteUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutQuotesNestedInput
+    client?: ClientUpdateOneWithoutQuotesNestedInput
   }
 
   export type QuoteUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6342,18 +8418,38 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuoteCreateManyUserInput = {
     id?: string
     quoteNumber: string
-    clientName: string
-    clientEmail: string
-    clientCompany?: string | null
-    clientPhone?: string | null
     totalAmount: Decimal | DecimalJsLike | number | string
     status?: $Enums.QuoteStatus
     expiryDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    clientId?: string | null
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
+  }
+
+  export type ClientCreateManyUserInput = {
+    id?: string
+    name: string
+    email: string
+    phone?: string | null
+    company?: string | null
+    address?: string | null
+    kbis?: string | null
+    vatNumber?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6362,48 +8458,161 @@ export namespace Prisma {
   export type QuoteUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    client?: ClientUpdateOneWithoutQuotesNestedInput
     items?: QuoteItemUpdateManyWithoutQuoteNestedInput
   }
 
   export type QuoteUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     items?: QuoteItemUncheckedUpdateManyWithoutQuoteNestedInput
   }
 
   export type QuoteUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     quoteNumber?: StringFieldUpdateOperationsInput | string
-    clientName?: StringFieldUpdateOperationsInput | string
-    clientEmail?: StringFieldUpdateOperationsInput | string
-    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
-    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
     totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ClientUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quotes?: QuoteUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quotes?: QuoteUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    kbis?: NullableStringFieldUpdateOperationsInput | string | null
+    vatNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuoteCreateManyClientInput = {
+    id?: string
+    quoteNumber: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.QuoteStatus
+    expiryDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    clientName?: string | null
+    clientEmail?: string | null
+    clientCompany?: string | null
+    clientPhone?: string | null
+  }
+
+  export type QuoteUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quoteNumber?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutQuotesNestedInput
+    items?: QuoteItemUpdateManyWithoutQuoteNestedInput
+  }
+
+  export type QuoteUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quoteNumber?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    items?: QuoteItemUncheckedUpdateManyWithoutQuoteNestedInput
+  }
+
+  export type QuoteUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quoteNumber?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    clientName?: NullableStringFieldUpdateOperationsInput | string | null
+    clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
+    clientPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuoteItemCreateManyQuoteInput = {

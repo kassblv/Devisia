@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState("general");
+  const [mounted, setMounted] = useState(false);
   
   // Paramètres généraux
   const [companyName, setCompanyName] = useState("");
@@ -31,41 +36,81 @@ export default function SettingsPage() {
   const [primaryColor, setPrimaryColor] = useState("#3b82f6");
   const [darkMode, setDarkMode] = useState(false);
   
+  // Éviter un problème d'hydratation avec next-themes
+  useEffect(() => {
+    setMounted(true);
+    setDarkMode(theme === "dark");
+  }, [theme]);
+  
   const handleGeneralSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Implémenter la sauvegarde des paramètres généraux
-    alert("Paramètres généraux sauvegardés");
+    toast.success("Paramètres généraux sauvegardés");
   };
   
   const handleQuoteSettingsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Implémenter la sauvegarde des paramètres de devis
-    alert("Paramètres de devis sauvegardés");
+    toast.success("Paramètres de devis sauvegardés");
   };
   
   const handleNotificationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Implémenter la sauvegarde des paramètres de notification
-    alert("Paramètres de notification sauvegardés");
+    toast.success("Paramètres de notification sauvegardés");
   };
   
   const handleAppearanceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implémenter la sauvegarde des paramètres d'apparence
-    alert("Paramètres d'apparence sauvegardés");
+    // Sauvegarder le thème
+    if (darkMode) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+    // Implémenter la sauvegarde des autres paramètres d'apparence
+    toast.success("Paramètres d'apparence sauvegardés");
   };
   
   if (!session?.user) {
     return (
-      <div className="container mx-auto py-8 text-center">
-        <p>Veuillez vous connecter pour accéder aux paramètres.</p>
+      <div className="container mx-auto py-8">
+        <Skeleton className="h-10 w-48 mx-auto mb-8" />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-1">
+            <Card className="p-3 bg-white shadow-sm border border-gray-100 rounded-lg overflow-hidden">
+              <Skeleton className="h-8 w-full mb-2" />
+              <Skeleton className="h-8 w-full mb-2" />
+              <Skeleton className="h-8 w-full mb-2" />
+              <Skeleton className="h-8 w-full" />
+            </Card>
+          </div>
+          
+          <div className="lg:col-span-3">
+            <Card className="p-6">
+              <Skeleton className="h-7 w-40 mb-6" />
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <Skeleton className="h-10 w-32 mt-4" />
+              </div>
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold text-indigo-900 mb-8">
+      <h1 className="text-3xl font-bold text-indigo-900 dark:text-white mb-8">
         Paramètres
         <div className="h-1 w-24 bg-gradient-to-r from-indigo-400 to-pink-500 mt-2 rounded-full"></div>
       </h1>
@@ -287,8 +332,13 @@ export default function SettingsPage() {
           )}
           
           {activeTab === "notifications" && (
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Paramètres de notification</h2>
+            <Card className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg shadow-sm">
+              <h2 className="text-xl font-semibold text-indigo-700 dark:text-white mb-6 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                Paramètres de notification
+              </h2>
               
               <form onSubmit={handleNotificationSubmit} className="space-y-4">
                 <div className="flex items-center justify-between p-3 border rounded mb-2">
@@ -361,8 +411,13 @@ export default function SettingsPage() {
           )}
           
           {activeTab === "appearance" && (
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Paramètres d'apparence</h2>
+            <Card className="p-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-lg shadow-sm">
+              <h2 className="text-xl font-semibold text-indigo-700 dark:text-white mb-6 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+                Paramètres d'apparence
+              </h2>
               
               <form onSubmit={handleAppearanceSubmit} className="space-y-4">
                 <div>
@@ -394,7 +449,11 @@ export default function SettingsPage() {
                     <input
                       type="checkbox"
                       checked={darkMode}
-                      onChange={() => setDarkMode(!darkMode)}
+                      onChange={() => {
+                        setDarkMode(!darkMode);
+                        // Appliquer le thème immédiatement pour une meilleure expérience utilisateur
+                        setTheme(!darkMode ? "dark" : "light");
+                      }}
                       className="sr-only peer"
                     />
                     <div className={`w-11 h-6 rounded-full peer ${darkMode ? 'bg-blue-600' : 'bg-gray-200'} peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 transition-colors`}>

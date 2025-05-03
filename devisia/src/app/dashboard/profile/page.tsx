@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface UserProfile {
   id: string;
@@ -100,27 +102,49 @@ export default function ProfilePage() {
         },
       });
       
-      alert("Profil mis à jour avec succès");
+      toast.success("Profil mis à jour avec succès");
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de la mise à jour du profil");
+      toast.error("Erreur lors de la mise à jour du profil");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !session?.user) {
     return (
-      <div className="container mx-auto py-8 text-center">
-        <p>Chargement du profil...</p>
-      </div>
-    );
-  }
-  
-  if (!session?.user) {
-    return (
-      <div className="container mx-auto py-8 text-center">
-        <p>Veuillez vous connecter pour accéder à votre profil.</p>
+      <div className="container mx-auto py-8">
+        <Skeleton className="h-10 w-48 mb-6" />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="p-6">
+              <Skeleton className="h-7 w-64 mb-6" />
+              
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-32" />
+              </div>
+            </Card>
+          </div>
+          
+          <div>
+            <Card className="p-6">
+              <Skeleton className="h-7 w-40 mb-4" />
+              <Skeleton className="h-32 w-32 mx-auto rounded-full mb-4" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full mt-2" />
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }

@@ -131,20 +131,36 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ClientScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  company: 'company',
+  address: 'address',
+  kbis: 'kbis',
+  vatNumber: 'vatNumber',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.QuoteScalarFieldEnum = {
   id: 'id',
   quoteNumber: 'quoteNumber',
-  clientName: 'clientName',
-  clientEmail: 'clientEmail',
-  clientCompany: 'clientCompany',
-  clientPhone: 'clientPhone',
   totalAmount: 'totalAmount',
   status: 'status',
   expiryDate: 'expiryDate',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  clientId: 'clientId',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  clientCompany: 'clientCompany',
+  clientPhone: 'clientPhone'
 };
 
 exports.Prisma.QuoteItemScalarFieldEnum = {
@@ -181,6 +197,7 @@ exports.QuoteStatus = exports.$Enums.QuoteStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Client: 'Client',
   Quote: 'Quote',
   QuoteItem: 'QuoteItem'
 };

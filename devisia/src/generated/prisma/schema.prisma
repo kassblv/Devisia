@@ -24,26 +24,50 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   quotes      Quote[]
+  clients     Client[]
 
   @@map("users")
 }
 
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  address   String?
+  kbis      String?
+  vatNumber String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quotes    Quote[] // Relation avec les devis
+
+  @@map("clients")
+}
+
 model Quote {
-  id            String      @id @default(uuid())
-  quoteNumber   String      @unique
-  clientName    String
-  clientEmail   String
+  id          String      @id @default(uuid())
+  quoteNumber String      @unique
+  totalAmount Decimal     @db.Decimal(10, 2)
+  status      QuoteStatus @default(DRAFT)
+  expiryDate  DateTime?
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId    String?
+  client      Client?     @relation(fields: [clientId], references: [id])
+  items       QuoteItem[]
+
+  // Champs de secours au cas où le client serait supprimé
+  clientName    String?
+  clientEmail   String?
   clientCompany String?
   clientPhone   String?
-  totalAmount   Decimal     @db.Decimal(10, 2)
-  status        QuoteStatus @default(DRAFT)
-  expiryDate    DateTime?
-  notes         String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  userId        String
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items         QuoteItem[]
 
   @@map("quotes")
 }

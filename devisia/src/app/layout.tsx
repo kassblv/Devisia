@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import NextAuthSessionProvider from "@/components/auth/SessionProvider";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import "./globals.css";
+import "../styles/dark-mode-fixes.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,13 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
-        <NextAuthSessionProvider>
-          {children}
-        </NextAuthSessionProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <NextAuthSessionProvider>
+            <div className="flex flex-col h-full w-full">
+              {children}
+            </div>
+            <Toaster position="top-right" richColors closeButton />
+          </NextAuthSessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -47,86 +47,53 @@ export default function QuotesPage() {
     }
   }, [session]);
 
-  // Pour la démo, nous utilisons des données fictives
-  const demoQuotes: Quote[] = [
-    {
-      id: "1",
-      quoteNumber: "DEV-2025-001",
-      clientName: "Acme Inc.",
-      clientEmail: "contact@acme.com",
-      totalAmount: 3500,
-      status: "APPROVED",
-      createdAt: "2025-04-25T10:00:00.000Z",
-      expiryDate: "2025-05-25T10:00:00.000Z",
-    },
-    {
-      id: "2",
-      quoteNumber: "DEV-2025-002",
-      clientName: "TechSolutions SAS",
-      clientEmail: "info@techsolutions.fr",
-      totalAmount: 2200,
-      status: "SENT",
-      createdAt: "2025-04-27T14:30:00.000Z",
-      expiryDate: "2025-05-27T14:30:00.000Z",
-    },
-    {
-      id: "3",
-      quoteNumber: "DEV-2025-003",
-      clientName: "GlobalDesign",
-      clientEmail: "projects@globaldesign.com",
-      totalAmount: 1800,
-      status: "DRAFT",
-      createdAt: "2025-04-28T09:15:00.000Z",
-      expiryDate: null,
-    },
-    {
-      id: "4",
-      quoteNumber: "DEV-2025-004",
-      clientName: "StartupXYZ",
-      clientEmail: "founder@startupxyz.io",
-      totalAmount: 4200,
-      status: "SENT",
-      createdAt: "2025-04-29T11:45:00.000Z",
-      expiryDate: "2025-05-29T11:45:00.000Z",
-    },
-    {
-      id: "5",
-      quoteNumber: "DEV-2025-005",
-      clientName: "Local Business",
-      clientEmail: "owner@localbusiness.fr",
-      totalAmount: 950,
-      status: "REJECTED",
-      createdAt: "2025-04-20T15:10:00.000Z",
-      expiryDate: "2025-05-20T15:10:00.000Z",
-    },
-    {
-      id: "6",
-      quoteNumber: "DEV-2025-006",
-      clientName: "E-commerce Plus",
-      clientEmail: "service@ecomplus.com",
-      totalAmount: 5200,
-      status: "APPROVED",
-      createdAt: "2025-04-15T08:30:00.000Z",
-      expiryDate: "2025-05-15T08:30:00.000Z",
-    },
-  ];
+  // Composant Shimmer pour les lignes de chargement
+  const QuoteShimmerRow = ({ index }: { index: number }) => (
+    <tr key={`shimmer-${index}`} className="animate-pulse">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-2"></div>
+        <div className="h-3 bg-gray-100 dark:bg-gray-600 rounded w-48"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right">
+        <div className="flex justify-end space-x-2">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-10"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-14"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
+        </div>
+      </td>
+    </tr>
+  );
 
-  const displayQuotes = loading ? demoQuotes : quotes;
+  const displayQuotes = loading ? [] : quotes;
 
   // Fonction pour filtrer les devis en fonction de la recherche et du filtre de statut
-  const filteredQuotes = displayQuotes.filter(quote => {
-    const matchesSearch = 
-      quote.quoteNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quote.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quote.clientEmail.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === "all" || quote.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
+  const filteredQuotesBySearch = quotes.filter(quote =>
+    quote.quoteNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quote.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quote.clientEmail.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredQuotesByStatus = statusFilter === 'all'
+    ? filteredQuotesBySearch
+    : filteredQuotesBySearch.filter(quote => quote.status.toLowerCase() === statusFilter);
 
   // Fonction pour trier les devis
-  const sortedQuotes = [...filteredQuotes].sort((a, b) => {
+  const filteredQuotes = [...filteredQuotesByStatus].sort((a, b) => {
     let comparison = 0;
     
     if (sortBy === "createdAt") {
@@ -165,16 +132,20 @@ export default function QuotesPage() {
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'DRAFT':
-        return 'bg-gray-100 text-gray-800';
-      case 'SENT':
-        return 'bg-blue-100 text-blue-800';
-      case 'APPROVED':
-        return 'bg-green-100 text-green-800';
-      case 'REJECTED':
-        return 'bg-red-100 text-red-800';
+      case "draft":
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+      case "sent":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+      case "viewed":
+        return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300";
+      case "accepted":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "rejected":
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      case "expired":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
     }
   };
 
@@ -203,15 +174,20 @@ export default function QuotesPage() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-        <h1 className="text-3xl font-bold text-indigo-900 mb-4 md:mb-0">
-          Mes devis
-          <div className="h-1 w-24 bg-gradient-to-r from-indigo-400 to-pink-500 mt-2 rounded-full"></div>
-        </h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-indigo-900 dark:text-white mb-2">
+            Mes devis
+          </h1>
+          <div className="h-1 w-20 bg-gradient-to-r from-indigo-400 to-pink-500 mb-4 rounded-full"></div>
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 md:mb-0">
+            Gérez et suivez tous vos devis en un seul endroit
+          </p>
+        </div>
         <Link
           href="/dashboard/quotes/new"
-          className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-md text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg"
+          className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-md text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 dark:from-indigo-500 dark:to-indigo-600 dark:hover:from-indigo-600 dark:hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-900 transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg self-start md:self-center"
         >
           <svg className="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -221,32 +197,30 @@ export default function QuotesPage() {
       </div>
 
       {/* Filtres et recherche - Style amélioré */}
-      <div className="bg-white bg-gradient-to-br from-white to-indigo-50/30 shadow-md hover:shadow-lg rounded-xl p-6 mb-8 border border-indigo-100 transition-all duration-300">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="w-full md:w-1/3">
-            <label htmlFor="search" className="sr-only">Rechercher</label>
-            <div className="relative rounded-md shadow-sm">
+      <div className="bg-white dark:bg-gray-800 bg-gradient-to-br from-white to-indigo-50/30 dark:from-gray-800 dark:to-indigo-900/20 shadow-md hover:shadow-lg rounded-xl p-6 mb-6 border border-indigo-100 dark:border-gray-700 transition-all duration-300">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Filtres et recherche</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="col-span-1 lg:col-span-2">
+            <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
               <input
                 type="text"
-                id="search"
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 sm:text-sm border-indigo-200 rounded-lg py-2.5 bg-white shadow-sm transition-colors duration-200"
-                placeholder="Rechercher un devis..."
+                placeholder="Rechercher par numéro, client..."
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
 
-          <div className="w-full md:w-1/4">
+          <div>
             <label htmlFor="status-filter" className="sr-only">Filtrer par statut</label>
             <select
-              id="status-filter"
-              className="mt-1 block w-full py-2.5 px-3 border border-indigo-200 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors duration-200"
+              className="block w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 pl-3 pr-10 text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-white"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -258,11 +232,11 @@ export default function QuotesPage() {
             </select>
           </div>
 
-          <div className="w-full md:w-1/4">
+          <div>
             <label htmlFor="sort-by" className="sr-only">Trier par</label>
             <select
               id="sort-by"
-              className="mt-1 block w-full py-2.5 px-3 border border-indigo-200 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors duration-200"
+              className="block w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 pl-3 pr-10 text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-white"
               value={sortBy}
               onChange={(e) => {
                 setSortBy(e.target.value);
@@ -279,31 +253,29 @@ export default function QuotesPage() {
             </select>
           </div>
 
-          <div className="w-full md:w-auto">
-            <button
-              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              {sortOrder === "asc" ? (
-                <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                </svg>
-              ) : (
-                <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
-                </svg>
-              )}
-              <span className="sr-only">{sortOrder === "asc" ? "Tri ascendant" : "Tri descendant"}</span>
-            </button>
-          </div>
+
+        </div>
+        
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setStatusFilter('all');
+              setSortBy('date');
+              setSortOrder('desc');
+            }}
+            className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 underline"
+          >
+            Réinitialiser les filtres
+          </button>
         </div>
       </div>
 
       {/* Liste des devis */}
-      <div className="bg-white shadow overflow-hidden rounded-lg">
+      <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onClick={() => toggleSortOrder("quoteNumber")}>
                   <div className="flex items-center">
@@ -359,18 +331,23 @@ export default function QuotesPage() {
                 <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {sortedQuotes.length > 0 ? (
-                sortedQuotes.map((quote) => (
-                  <tr key={quote.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{quote.quoteNumber}</td>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {loading ? (
+                // Afficher des shimmer pendant le chargement
+                Array.from({ length: 6 }).map((_, index) => (
+                  <QuoteShimmerRow key={index} index={index} />
+                ))
+              ) : filteredQuotes.length > 0 ? (
+                filteredQuotes.map((quote) => (
+                  <tr key={quote.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{quote.quoteNumber}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{quote.clientName}</div>
-                      <div className="text-sm text-gray-500">{quote.clientEmail}</div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{quote.clientName}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-300">{quote.clientEmail}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(quote.totalAmount)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(quote.createdAt)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(quote.expiryDate)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{formatCurrency(quote.totalAmount)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{formatDate(quote.createdAt)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{formatDate(quote.expiryDate)}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeColor(quote.status)}`}>
                         {getStatusLabel(quote.status)}
@@ -380,13 +357,13 @@ export default function QuotesPage() {
                       <div className="flex justify-end space-x-2">
                         <Link
                           href={`/dashboard/quotes/${quote.id}`}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                         >
                           Voir
                         </Link>
                         <Link
                           href={`/dashboard/quotes/${quote.id}/edit`}
-                          className="text-indigo-600 hover:text-indigo-900"
+                          className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
                         >
                           Modifier
                         </Link>
@@ -397,7 +374,7 @@ export default function QuotesPage() {
                               // Appel API de suppression
                             }
                           }}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                         >
                           Supprimer
                         </button>
@@ -407,15 +384,15 @@ export default function QuotesPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-6 py-10 text-center text-sm text-gray-500">
+                  <td colSpan={7} className="px-6 py-10 text-center text-sm text-gray-500 dark:text-gray-300">
                     <div className="flex flex-col items-center justify-center">
-                      <svg className="h-12 w-12 text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <p className="text-gray-500 mb-2">Aucun devis trouvé</p>
+                      <p className="text-gray-500 dark:text-gray-300 mb-2">Aucun devis trouvé</p>
                       <Link
                         href="/dashboard/quotes/new"
-                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-md text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
                       >
                         <svg className="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

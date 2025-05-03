@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+import { IconEdit, IconDownload, IconCheck, IconX, IconCalendar, IconCreditCard, IconUser, IconMail } from "@tabler/icons-react";
 
 interface QuoteItem {
   id: string;
@@ -87,8 +89,10 @@ export default function QuoteDetails({ params }: { params: { id: string } }) {
         setIsLoading(false);
       } catch (error) {
         console.error("Erreur:", error);
-        alert("Impossible de charger le devis");
-        router.push("/dashboard/quotes");
+        toast.error("Impossible de charger le devis");
+        setTimeout(() => {
+          router.push("/dashboard/quotes");
+        }, 1500);
       }
     };
     
@@ -124,7 +128,7 @@ export default function QuoteDetails({ params }: { params: { id: string } }) {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de l'exportation en PDF");
+      toast.error("Erreur lors de l'exportation en PDF");
     }
   };
   
@@ -148,7 +152,7 @@ export default function QuoteDetails({ params }: { params: { id: string } }) {
       setQuote((prev) => prev ? { ...prev, status: newStatus } : null);
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de la mise à jour du statut");
+      toast.error("Erreur lors de la mise à jour du statut");
     }
   };
   
