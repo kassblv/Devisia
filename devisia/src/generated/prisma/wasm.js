@@ -157,6 +157,8 @@ exports.Prisma.QuoteScalarFieldEnum = {
   updatedAt: 'updatedAt',
   userId: 'userId',
   clientId: 'clientId',
+  metadata: 'metadata',
+  projet: 'projet',
   clientName: 'clientName',
   clientEmail: 'clientEmail',
   clientCompany: 'clientCompany',

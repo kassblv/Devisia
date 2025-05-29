@@ -33,6 +33,7 @@ export interface QuestionnaireData {
 
 // Payload attendu par l'API de génération
 export interface DevisRequestPayload {
+  clientId: string;          // ID du client pour lequel le devis est généré
   questionnaireData: QuestionnaireData;
   userInstructions: string;
 }

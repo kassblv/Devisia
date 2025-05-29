@@ -63,6 +63,10 @@ model Quote {
   client          Client?       @relation(fields: [clientId], references: [id])
   items           QuoteItem[]
   
+  // Champs supplémentaires pour les données métier
+  metadata        String?       // Stockage JSON pour données additionnelles (materiaux, postes, etc.)
+  projet          String?       // Nom ou titre du projet
+
   // Champs de secours au cas où le client serait supprimé
   clientName      String?
   clientEmail     String?

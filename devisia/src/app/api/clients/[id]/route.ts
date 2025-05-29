@@ -3,10 +3,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// GET - Récupérer un client spécifique
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
   
@@ -17,7 +15,13 @@ export async function GET(
   try {
     // Récupérer l'ID de l'utilisateur à partir de la session
     const userId = session.user.id as string;
-    const clientId = params.id;
+    
+    // Récupération de l'ID du client depuis les paramètres de l'URL
+    const clientId = context.params.id;
+    
+    if (!clientId) {
+      return NextResponse.json({ error: "ID client manquant" }, { status: 400 });
+    }
     
     // Récupérer le client spécifique
     const client = await prisma.client.findFirst({
@@ -51,30 +55,24 @@ export async function GET(
         quoteNumber: true,
         totalAmount: true,
         status: true,
-        expiryDate: true,
         createdAt: true
       }
     });
     
     // Calculer le montant total dépensé
-    const totalSpentResult = await prisma.quote.aggregate({
-      where: {
-        clientId: clientId,
-        status: 'APPROVED'
-      },
-      _sum: {
-        totalAmount: true
-      }
-    });
+    const totalSpent = quotes.reduce((sum, quote) => {
+      return sum + (quote.totalAmount ? Number(quote.totalAmount) : 0);
+    }, 0);
     
-    const totalSpent = totalSpentResult._sum.totalAmount?.toNumber() || 0;
-    
-    // Retourner le client avec les statistiques et les devis
+    // Retourner le client avec des statistiques supplémentaires
     return NextResponse.json({
       ...client,
-      quoteCount,
-      totalSpent,
-      quotes
+      statistics: {
+        quoteCount,
+        totalSpent,
+        lastQuote: quotes[0] || null
+      },
+      quotes: quotes
     });
   } catch (error) {
     console.error("Erreur lors de la récupération du client:", error);
@@ -85,10 +83,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// PUT - Mettre à jour un client existant
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
   
@@ -98,13 +94,13 @@ export async function PUT(
   
   try {
     const userId = session.user.id as string;
-    const clientId = params.id;
+    const clientId = context.params.id;
     const data = await request.json();
     
     // Validation basique des données
-    if (!data.name || !data.email) {
+    if (!data.name) {
       return NextResponse.json(
-        { error: "Le nom et l'email sont obligatoires" },
+        { error: "Le nom du client est requis" },
         { status: 400 }
       );
     }
@@ -118,10 +114,13 @@ export async function PUT(
     });
     
     if (!existingClient) {
-      return NextResponse.json({ error: "Client non trouvé" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Client non trouvé ou non autorisé" },
+        { status: 404 }
+      );
     }
     
-    // Mise à jour du client
+    // Mettre à jour le client
     const updatedClient = await prisma.client.update({
       where: {
         id: clientId
@@ -129,12 +128,10 @@ export async function PUT(
       data: {
         name: data.name,
         email: data.email,
-        phone: data.phone || null,
-        company: data.company || null,
-        address: data.address || null,
-        kbis: data.kbis || null,
-        vatNumber: data.vatNumber || null,
-        notes: data.notes || null
+        phone: data.phone,
+        company: data.company,
+        address: data.address,
+        notes: data.notes
       }
     });
     
@@ -148,10 +145,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// DELETE - Supprimer un client
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
   // Vérification de l'authentification
   const session = await getServerSession(authOptions);
   
@@ -161,7 +156,7 @@ export async function DELETE(
   
   try {
     const userId = session.user.id as string;
-    const clientId = params.id;
+    const clientId = context.params.id;
     
     // Vérifier que le client existe et appartient à cet utilisateur
     const existingClient = await prisma.client.findFirst({
@@ -172,7 +167,10 @@ export async function DELETE(
     });
     
     if (!existingClient) {
-      return NextResponse.json({ error: "Client non trouvé" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Client non trouvé ou non autorisé" },
+        { status: 404 }
+      );
     }
     
     // Supprimer le client

@@ -1,0 +1,18 @@
+# Dossiers à ignorer
+node_modules
+.next
+dist
+build
+out
+coverage
+public
+
+# Fichiers à ignorer
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.gitignore
+README.md
+
+# Fichiers générés automatiquement
+*.generated.*

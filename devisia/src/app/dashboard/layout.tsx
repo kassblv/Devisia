@@ -24,7 +24,6 @@ import {
 
 // Map des titres de pages pour le fil d'Ariane
 const breadcrumbTitles: Record<string, string> = {
-  "/dashboard": "Tableau de bord",
   "/dashboard/quotes": "Devis",
   "/dashboard/clients": "Clients",
   "/dashboard/settings": "Paramètres",

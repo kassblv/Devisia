@@ -17,47 +17,62 @@ module.exports = {
           from: { height: 'var(--radix-collapsible-content-height)' },
           to: { height: '0' },
         },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
       },
       animation: {
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
         'collapsible-up': 'collapsible-up 0.2s ease-in-out',
+        'float': 'float 5s ease-in-out infinite',
+        'float-slow': 'float-slow 8s ease-in-out infinite',
+        'bounce-slow': 'bounce-slow 3s ease-in-out infinite',
       },
       colors: {
-        // Couleurs primaires
+        // Couleurs primaires - Bleu sobre
         primary: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#7c3aed', // Couleur principale (violet)
-          600: '#6d28d9',
-          700: '#5b21b6',
-          800: '#4c1d95',
-          900: '#2e1065',
+          50: '#f0f6ff',
+          100: '#e0eefe',
+          200: '#bae0fd',
+          300: '#90cafc',
+          400: '#5eacf8',
+          500: '#3b82f6', // Couleur principale (bleu sobre)
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
-        // Couleurs secondaires
+        // Couleurs secondaires - Gris bleutué
         secondary: {
-          50: '#e6f9f5',
-          100: '#ccf4eb',
-          200: '#99e9d6',
-          300: '#66ddc2',
-          400: '#33d2ad',
-          500: '#00c799', // Couleur secondaire principale
-          600: '#009f7a',
-          700: '#00775c',
-          800: '#00503d',
-          900: '#00281f',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b', // Couleur secondaire principale (gris bleutué)
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         },
         // Couleurs de la sidebar
         sidebar: {
           DEFAULT: '#f8fafc', // fond par défaut (light mode)
           foreground: '#0f172a', // texte par défaut
-          accent: 'rgba(124, 58, 237, 0.1)', // bg-primary-500 (violet) avec opacité
-          'accent-foreground': '#7c3aed', // texte identique au primary-500 (violet)
+          accent: 'rgba(59, 130, 246, 0.1)', // bg-primary-500 (bleu) avec opacité
+          'accent-foreground': '#3b82f6', // texte identique au primary-500 (bleu)
           muted: '#f1f5f9', // arrière-plan atténué
           'muted-foreground': '#64748b', // texte atténué
-          ring: 'rgba(124, 58, 237, 0.3)', // focus ring
+          ring: 'rgba(59, 130, 246, 0.3)', // focus ring
         },
         // États
         success: '#10b981',

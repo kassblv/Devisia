@@ -18,6 +18,7 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react"
+import { useSession } from "next-auth/react"
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -34,17 +35,7 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "Utilisateur",
-    email: "utilisateur@devisia.com",
-    avatar: "/avatars/user.jpg",
-  },
   navMain: [
-    {
-      title: "Tableau de bord",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
     {
       title: "Devis",
       url: "/dashboard/quotes",
@@ -55,11 +46,7 @@ const data = {
       url: "/dashboard/clients",
       icon: IconUsers,
     },
-    {
-      title: "Paramètres",
-      url: "/dashboard/settings",
-      icon: IconSettings,
-    },
+
   ],
   navClouds: [
     {
@@ -93,25 +80,7 @@ const data = {
         },
       ],
     },
-    {
-      title: "Paramètres",
-      icon: IconSettings,
-      url: "/dashboard/settings",
-      items: [
-        {
-          title: "Général",
-          url: "/dashboard/settings",
-        },
-        {
-          title: "Profil",
-          url: "/dashboard/settings/profile",
-        },
-        {
-          title: "Notifications",
-          url: "/dashboard/settings/notifications",
-        },
-      ],
-    },
+
   ],
   navSecondary: [
     {
@@ -130,6 +99,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: session } = useSession()
+  
   return (
     <Sidebar 
       collapsible="offcanvas" 
@@ -156,7 +127,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-muted pt-2">
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

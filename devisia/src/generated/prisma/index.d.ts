@@ -3609,6 +3609,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     clientId: string | null
+    metadata: string | null
+    projet: string | null
     clientName: string | null
     clientEmail: string | null
     clientCompany: string | null
@@ -3626,6 +3628,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     clientId: string | null
+    metadata: string | null
+    projet: string | null
     clientName: string | null
     clientEmail: string | null
     clientCompany: string | null
@@ -3643,6 +3647,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     clientId: number
+    metadata: number
+    projet: number
     clientName: number
     clientEmail: number
     clientCompany: number
@@ -3670,6 +3676,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     clientId?: true
+    metadata?: true
+    projet?: true
     clientName?: true
     clientEmail?: true
     clientCompany?: true
@@ -3687,6 +3695,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     clientId?: true
+    metadata?: true
+    projet?: true
     clientName?: true
     clientEmail?: true
     clientCompany?: true
@@ -3704,6 +3714,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     clientId?: true
+    metadata?: true
+    projet?: true
     clientName?: true
     clientEmail?: true
     clientCompany?: true
@@ -3808,6 +3820,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     clientId: string | null
+    metadata: string | null
+    projet: string | null
     clientName: string | null
     clientEmail: string | null
     clientCompany: string | null
@@ -3844,6 +3858,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     clientId?: boolean
+    metadata?: boolean
+    projet?: boolean
     clientName?: boolean
     clientEmail?: boolean
     clientCompany?: boolean
@@ -3865,6 +3881,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     clientId?: boolean
+    metadata?: boolean
+    projet?: boolean
     clientName?: boolean
     clientEmail?: boolean
     clientCompany?: boolean
@@ -3884,6 +3902,8 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     clientId?: boolean
+    metadata?: boolean
+    projet?: boolean
     clientName?: boolean
     clientEmail?: boolean
     clientCompany?: boolean
@@ -3903,13 +3923,15 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     clientId?: boolean
+    metadata?: boolean
+    projet?: boolean
     clientName?: boolean
     clientEmail?: boolean
     clientCompany?: boolean
     clientPhone?: boolean
   }
 
-  export type QuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quoteNumber" | "totalAmount" | "status" | "expiryDate" | "notes" | "createdAt" | "updatedAt" | "userId" | "clientId" | "clientName" | "clientEmail" | "clientCompany" | "clientPhone", ExtArgs["result"]["quote"]>
+  export type QuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quoteNumber" | "totalAmount" | "status" | "expiryDate" | "notes" | "createdAt" | "updatedAt" | "userId" | "clientId" | "metadata" | "projet" | "clientName" | "clientEmail" | "clientCompany" | "clientPhone", ExtArgs["result"]["quote"]>
   export type QuoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     client?: boolean | Quote$clientArgs<ExtArgs>
@@ -3943,6 +3965,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       clientId: string | null
+      metadata: string | null
+      projet: string | null
       clientName: string | null
       clientEmail: string | null
       clientCompany: string | null
@@ -4383,6 +4407,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Quote", 'DateTime'>
     readonly userId: FieldRef<"Quote", 'String'>
     readonly clientId: FieldRef<"Quote", 'String'>
+    readonly metadata: FieldRef<"Quote", 'String'>
+    readonly projet: FieldRef<"Quote", 'String'>
     readonly clientName: FieldRef<"Quote", 'String'>
     readonly clientEmail: FieldRef<"Quote", 'String'>
     readonly clientCompany: FieldRef<"Quote", 'String'>
@@ -6040,6 +6066,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     userId: 'userId',
     clientId: 'clientId',
+    metadata: 'metadata',
+    projet: 'projet',
     clientName: 'clientName',
     clientEmail: 'clientEmail',
     clientCompany: 'clientCompany',
@@ -6359,6 +6387,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
     clientId?: StringNullableFilter<"Quote"> | string | null
+    metadata?: StringNullableFilter<"Quote"> | string | null
+    projet?: StringNullableFilter<"Quote"> | string | null
     clientName?: StringNullableFilter<"Quote"> | string | null
     clientEmail?: StringNullableFilter<"Quote"> | string | null
     clientCompany?: StringNullableFilter<"Quote"> | string | null
@@ -6379,6 +6409,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    projet?: SortOrderInput | SortOrder
     clientName?: SortOrderInput | SortOrder
     clientEmail?: SortOrderInput | SortOrder
     clientCompany?: SortOrderInput | SortOrder
@@ -6402,6 +6434,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
     clientId?: StringNullableFilter<"Quote"> | string | null
+    metadata?: StringNullableFilter<"Quote"> | string | null
+    projet?: StringNullableFilter<"Quote"> | string | null
     clientName?: StringNullableFilter<"Quote"> | string | null
     clientEmail?: StringNullableFilter<"Quote"> | string | null
     clientCompany?: StringNullableFilter<"Quote"> | string | null
@@ -6422,6 +6456,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    projet?: SortOrderInput | SortOrder
     clientName?: SortOrderInput | SortOrder
     clientEmail?: SortOrderInput | SortOrder
     clientCompany?: SortOrderInput | SortOrder
@@ -6447,6 +6483,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Quote"> | Date | string
     userId?: StringWithAggregatesFilter<"Quote"> | string
     clientId?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    metadata?: StringNullableWithAggregatesFilter<"Quote"> | string | null
+    projet?: StringNullableWithAggregatesFilter<"Quote"> | string | null
     clientName?: StringNullableWithAggregatesFilter<"Quote"> | string | null
     clientEmail?: StringNullableWithAggregatesFilter<"Quote"> | string | null
     clientCompany?: StringNullableWithAggregatesFilter<"Quote"> | string | null
@@ -6727,6 +6765,8 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -6747,6 +6787,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     clientId?: string | null
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -6763,6 +6805,8 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6783,6 +6827,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6801,6 +6847,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     clientId?: string | null
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -6816,6 +6864,8 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6833,6 +6883,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7169,6 +7221,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
+    metadata?: SortOrder
+    projet?: SortOrder
     clientName?: SortOrder
     clientEmail?: SortOrder
     clientCompany?: SortOrder
@@ -7190,6 +7244,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
+    metadata?: SortOrder
+    projet?: SortOrder
     clientName?: SortOrder
     clientEmail?: SortOrder
     clientCompany?: SortOrder
@@ -7207,6 +7263,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     clientId?: SortOrder
+    metadata?: SortOrder
+    projet?: SortOrder
     clientName?: SortOrder
     clientEmail?: SortOrder
     clientCompany?: SortOrder
@@ -7872,6 +7930,8 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -7890,6 +7950,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     clientId?: string | null
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -7977,6 +8039,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Quote"> | Date | string
     userId?: StringFilter<"Quote"> | string
     clientId?: StringNullableFilter<"Quote"> | string | null
+    metadata?: StringNullableFilter<"Quote"> | string | null
+    projet?: StringNullableFilter<"Quote"> | string | null
     clientName?: StringNullableFilter<"Quote"> | string | null
     clientEmail?: StringNullableFilter<"Quote"> | string | null
     clientCompany?: StringNullableFilter<"Quote"> | string | null
@@ -8055,6 +8119,8 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8073,6 +8139,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8350,6 +8418,8 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8369,6 +8439,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     clientId?: string | null
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8400,6 +8472,8 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8419,6 +8493,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8435,6 +8511,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     clientId?: string | null
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8464,6 +8542,8 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8482,6 +8562,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8499,6 +8581,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8559,6 +8643,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    metadata?: string | null
+    projet?: string | null
     clientName?: string | null
     clientEmail?: string | null
     clientCompany?: string | null
@@ -8574,6 +8660,8 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8592,6 +8680,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8609,6 +8699,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    projet?: NullableStringFieldUpdateOperationsInput | string | null
     clientName?: NullableStringFieldUpdateOperationsInput | string | null
     clientEmail?: NullableStringFieldUpdateOperationsInput | string | null
     clientCompany?: NullableStringFieldUpdateOperationsInput | string | null

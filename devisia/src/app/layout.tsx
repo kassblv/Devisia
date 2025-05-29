@@ -5,6 +5,9 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import "./globals.css";
 import "../styles/dark-mode-fixes.css";
+import { HeroHeader } from "@/components/ui/HeroHeader";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Footer } from "@/components/ui/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full bg-gradient-to-white/20 from-white to-white/20  `}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <NextAuthSessionProvider>
             <div className="flex flex-col h-full w-full">
               {children}
+              {/* <Footer />   */}
+
             </div>
+            {/* <BackgroundBeams /> */}
             <Toaster position="top-right" richColors closeButton />
           </NextAuthSessionProvider>
         </ThemeProvider>
