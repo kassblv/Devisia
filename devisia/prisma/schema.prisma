@@ -141,6 +141,17 @@ enum PlanInterval {
   YEARLY
 }
 
+model FormTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  json        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("form_templates")
+}
+
 enum SubStatus {
   ACTIVE
   CANCELED
