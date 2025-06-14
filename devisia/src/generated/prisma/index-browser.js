@@ -176,6 +176,35 @@ exports.Prisma.QuoteItemScalarFieldEnum = {
   quoteId: 'quoteId'
 };
 
+exports.Prisma.SubscriptionPlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  interval: 'interval',
+  features: 'features',
+  isActive: 'isActive',
+  maxQuotes: 'maxQuotes',
+  maxClients: 'maxClients',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  planId: 'planId',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  canceledAt: 'canceledAt',
+  trialEndsAt: 'trialEndsAt',
+  paymentId: 'paymentId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -197,11 +226,26 @@ exports.QuoteStatus = exports.$Enums.QuoteStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.PlanInterval = exports.$Enums.PlanInterval = {
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+};
+
+exports.SubStatus = exports.$Enums.SubStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELED: 'CANCELED',
+  EXPIRED: 'EXPIRED',
+  TRIAL: 'TRIAL',
+  PAST_DUE: 'PAST_DUE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Client: 'Client',
   Quote: 'Quote',
-  QuoteItem: 'QuoteItem'
+  QuoteItem: 'QuoteItem',
+  SubscriptionPlan: 'SubscriptionPlan',
+  Subscription: 'Subscription'
 };
 
 /**

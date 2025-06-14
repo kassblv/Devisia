@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRightIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
+import { Zap, ArrowDownToDot, Building, Users } from "lucide-react"
 
 interface Feature {
   name: string
@@ -31,8 +32,69 @@ interface PricingSectionProps {
   className?: string
 }
 
-function PricingSection({ tiers, className }: PricingSectionProps) {
+function PricingSection({ tiers: initialTiers, className }: PricingSectionProps) {
   const [isYearly, setIsYearly] = useState(false)
+  const [tiers, setTiers] = useState(initialTiers)
+  const [loading, setLoading] = useState(false)
+  
+  // Charger les plans d'abonnement depuis l'API
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/pricing')
+        
+        if (response.ok) {
+          const data = await response.json()
+          // Ajouter les icônes aux plans
+          const plansWithIcons = data.map((plan: any) => ({
+            ...plan,
+            icon: getIconForPlan(plan.name)
+          }))
+          setTiers(plansWithIcons)
+        }
+        
+      } catch (error) {
+        console.error('Erreur lors du chargement des plans:', error)
+        // En cas d'erreur, on garde les plans par défaut
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchPlans()
+  }, [])
+  
+  // Fonction pour obtenir l'icône selon le nom du plan
+  const getIconForPlan = (planName: string) => {
+    switch (planName) {
+      case 'Artisan':
+        return (
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-blue-500/30 blur-2xl rounded-full" />
+            <Zap className="w-7 h-7 relative z-10 text-blue-500 dark:text-blue-400 animate-[float_3s_ease-in-out_infinite]" />
+          </div>
+        )
+      case 'Entreprise':
+        return (
+          <div className="relative">
+            <Building className="w-7 h-7 relative z-10 text-blue-600" />
+          </div>
+        )
+      case 'Construction Pro':
+        return (
+          <div className="relative">
+            <Users className="w-7 h-7 relative z-10 text-blue-700" />
+          </div>
+        )
+      default:
+        return (
+          <div className="relative">
+            <Users className="w-7 h-7 relative z-10 text-blue-500" />
+          </div>
+        )
+    }
+  }
 
   const buttonStyles = {
     default: cn(

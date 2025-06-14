@@ -104,6 +104,20 @@ export default function NewQuoteGenerator() {
     }
   };
   const [selectedClient, setSelectedClient] = useState<string | undefined>(undefined);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showClientResults, setShowClientResults] = useState<boolean>(false);
+  
+  // Filtrer les clients caractère par caractère pour afficher uniquement les résultats pertinents
+  // Limite à 10 résultats max pour des performances optimales
+  const filteredClients = searchTerm.trim() !== ''
+    ? clients
+        .filter(client => 
+          client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+        .slice(0, 10) // Limiter à 10 résultats maximum pour des raisons de performance
+    : searchTerm === '' ? clients.slice(0, 10) : [];
+  
   // Nouvel état pour le domaine sélectionné
   const [selectedDomain, setSelectedDomain] = useState<string | undefined>(undefined);
   
@@ -249,6 +263,16 @@ export default function NewQuoteGenerator() {
 
   const handleClientChange = (value: string) => {
     setSelectedClient(value);
+    // Mettre à jour le champ de recherche avec le nom du client sélectionné
+    const selectedClientName = clients.find(c => c.id === value)?.name || '';
+    setSearchTerm(selectedClientName);
+  };
+
+  const handleClientSelection = (clientId: string) => {
+    setSelectedClient(clientId);
+    const selectedClientName = clients.find(c => c.id === clientId)?.name || '';
+    setSearchTerm(selectedClientName);
+    setShowClientResults(false);
   };
 
   const handleDomainChange = (value: string) => {
@@ -320,21 +344,58 @@ export default function NewQuoteGenerator() {
                   </div>
                 </div>
               ) : (
-                <Select 
-                  value={selectedClient} 
-                  onValueChange={handleClientChange}
-                >
-                  <SelectTrigger id="client" className="h-11">
-                    <SelectValue placeholder="Sélectionner un client..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {clients.map((client) => (
-                      <SelectItem key={client.id} value={client.id}>
-                        {client.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    id="client"
+                    placeholder="Rechercher un client..."
+                    className="h-11"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      // Mise à jour instantanée du terme de recherche pour filtrage caractère par caractère
+                      setSearchTerm(e.target.value);
+                      setShowClientResults(true);
+                      
+                      // Réinitialiser la sélection si le champ est vidé
+                      if (!e.target.value.trim()) {
+                        setSelectedClient(undefined);
+                      }
+                    }}
+                    onFocus={() => setShowClientResults(true)}
+                    onBlur={() => {
+                      // Délai pour permettre le clic sur un élément avant de fermer
+                      setTimeout(() => setShowClientResults(false), 200);
+                    }}
+                  />
+                  
+                  {/* Indicateur de sélection si un client est sélectionné */}
+                  {selectedClient && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                      <Badge variant="outline" className="font-normal">
+                        Sélectionné
+                      </Badge>
+                    </div>
+                  )}
+                  
+                  {/* Liste des résultats */}
+                  {showClientResults && (
+                    <div className="absolute z-10 w-full mt-1 bg-background rounded-md border shadow-md max-h-56 overflow-auto">
+                      {filteredClients.length > 0 ? (
+                        filteredClients.map(client => (
+                          <div
+                            key={client.id}
+                            className={`px-3 py-2 cursor-pointer hover:bg-secondary ${client.id === selectedClient ? 'bg-secondary' : ''}`}
+                            onClick={() => handleClientSelection(client.id)}
+                          >
+                            {client.name}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-3 py-2 text-muted-foreground">Aucun client trouvé</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               )}
               <p className="text-sm text-muted-foreground">Ou <Link href="/dashboard/clients/new" className="underline">créer un nouveau client</Link>.</p>
             </div>
@@ -1030,9 +1091,46 @@ export default function NewQuoteGenerator() {
                         </Button>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="flex items-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                          <span className="font-medium">{clients.find(c => c.id === selectedClient)?.name || '-'}</span>
+                        <div className="relative w-full">
+                          <div className="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <div className="w-full">
+                              <Input
+                                type="text"
+                                placeholder="Rechercher un client..."
+                                value={searchTerm}
+                                onChange={(e) => {
+                                  // Mise à jour instantanée du terme de recherche pour filtrage caractère par caractère
+                                  setSearchTerm(e.target.value);
+                                  setShowClientResults(true);
+                                  
+                                  // Réinitialiser la sélection si le champ est vidé
+                                  if (!e.target.value.trim()) {
+                                    setSelectedClient(undefined);
+                                  }
+                                }}
+                                onFocus={() => setShowClientResults(true)}
+                                className="h-9 w-full"
+                              />
+                              {showClientResults && searchTerm && (
+                                <div className="absolute z-10 w-full mt-1 bg-background rounded-md border shadow-md max-h-56 overflow-auto">
+                                  {filteredClients.length > 0 ? (
+                                    filteredClients.map(client => (
+                                      <div
+                                        key={client.id}
+                                        className="px-3 py-2 cursor-pointer hover:bg-secondary"
+                                        onClick={() => handleClientSelection(client.id)}
+                                      >
+                                        {client.name}
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="px-3 py-2 text-muted-foreground">Aucun client trouvé</div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1065,7 +1163,7 @@ export default function NewQuoteGenerator() {
                           Modifier
                         </Button>
                       </div>
-                      <div className="bg-muted p-3 rounded-md">
+                      <div className="bg-muted rounded p-2 flex justify-between items-center">
                         <p className="text-sm text-muted-foreground italic break-words whitespace-pre-wrap">
                           {userInstructions ? userInstructions : "Aucune instruction particulière n'a été fournie pour l'IA."}
                         </p>
@@ -1282,10 +1380,7 @@ export default function NewQuoteGenerator() {
                                     } else {
                                       setEditedQuote({
                                         ...editedQuote, 
-                                        postes: [...postes, {
-                                          nom: `Main d'oeuvre (${heures} heures)`,
-                                          prix: heures * taux
-                                        }]
+                                        postes: [...postes, { nom: 'Nouveau service', prix: 0 }]
                                       });
                                     }
                                   }

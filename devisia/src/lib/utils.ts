@@ -16,3 +16,15 @@ export function formatCurrency(amount: number, currency: string = 'EUR', locale:
     maximumFractionDigits: 2,
   }).format(amount);
 }
+
+/**
+ * Formate une date en format local (par défaut français)
+ */
+export function formatDate(date: string | Date, locale: string = 'fr-FR'): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return dateObj.toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}

@@ -15,16 +15,17 @@ datasource db {
 // Modèles pour l'application de génération de devis
 
 model User {
-  id          String   @id @default(uuid())
-  email       String   @unique
-  password    String
-  firstName   String?
-  lastName    String?
-  companyName String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  quotes      Quote[]
-  clients     Client[]
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  companyName   String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  quotes        Quote[]
+  clients       Client[]
+  subscriptions Subscription[]
 
   @@map("users")
 }
@@ -95,4 +96,55 @@ enum QuoteStatus {
   SENT
   APPROVED
   REJECTED
+}
+
+// Modèles pour les abonnements
+
+model SubscriptionPlan {
+  id            String         @id @default(uuid())
+  name          String         @unique
+  description   String?
+  price         Decimal        @db.Decimal(10, 2)
+  interval      PlanInterval   @default(MONTHLY)
+  features      String // Stocké en JSON
+  isActive      Boolean        @default(true)
+  maxQuotes     Int            @default(0)
+  maxClients    Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+
+  @@map("subscription_plans")
+}
+
+model Subscription {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId      String
+  plan        SubscriptionPlan @relation(fields: [planId], references: [id])
+  status      SubStatus        @default(ACTIVE)
+  startDate   DateTime         @default(now())
+  endDate     DateTime?
+  canceledAt  DateTime?
+  trialEndsAt DateTime?
+  paymentId   String? // ID de paiement externe (Stripe, etc.)
+  metadata    String? // Pour données supplémentaires (JSON)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum PlanInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum SubStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  TRIAL
+  PAST_DUE
 }

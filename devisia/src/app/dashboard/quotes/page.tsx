@@ -5,12 +5,15 @@ import { DataTable } from "@/components/ui/data-table"; // Import the new DataTa
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { Eye, Pencil, MoreVertical, Mail, Trash2 } from "lucide-react";
 
 interface Quote {
   id: string;
   quoteNumber: string;
-  clientName: string;
-  clientEmail: string;
+  client: {
+    name: string;
+    email: string;
+  };
   totalAmount: number;
   status: string;
   createdAt: string;
@@ -57,7 +60,7 @@ export default function QuotesPage() {
       // Filtre de recherche
       const searchMatch = 
         (quote.quoteNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        quote.clientName?.toLowerCase().includes(searchTerm.toLowerCase()));
+        quote.client?.name?.toLowerCase().includes(searchTerm.toLowerCase()));
       
       // Filtre de statut
       const statusMatch = statusFilter === 'all' || quote.status === statusFilter;
@@ -73,7 +76,7 @@ export default function QuotesPage() {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
         return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-      } else if (sortBy === 'amount') {
+      } else if (sortBy === 'totalAmount') {
         const amountA = a.totalAmount || 0;
         const amountB = b.totalAmount || 0;
         return sortOrder === 'asc' ? amountA - amountB : amountB - amountA;
@@ -81,6 +84,14 @@ export default function QuotesPage() {
         const dateA = a.expiryDate ? new Date(a.expiryDate).getTime() : 0;
         const dateB = b.expiryDate ? new Date(b.expiryDate).getTime() : 0;
         return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      } else if (sortBy === 'quoteNumber') {
+        const numA = a.quoteNumber || '';
+        const numB = b.quoteNumber || '';
+        return sortOrder === 'asc' ? numA.localeCompare(numB) : numB.localeCompare(numA);
+      } else if (sortBy === 'client') {
+        const nameA = a.client?.name || '';
+        const nameB = b.client?.name || '';
+        return sortOrder === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
       } else {
         // Par défaut, tri par quoteNumber
         const numA = a.quoteNumber || '';
@@ -109,19 +120,19 @@ export default function QuotesPage() {
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case "draft":
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+        return "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-700";
       case "sent":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
+        return "bg-blue-200 text-blue-900 dark:bg-blue-950 dark:text-blue-200 border border-blue-300 dark:border-blue-800";
       case "viewed":
-        return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300";
+        return "bg-indigo-200 text-indigo-900 dark:bg-indigo-950 dark:text-indigo-200 border border-indigo-300 dark:border-indigo-800";
       case "accepted":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+        return "bg-green-200 text-green-900 dark:bg-green-950 dark:text-green-200 border border-green-300 dark:border-green-800";
       case "rejected":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+        return "bg-red-200 text-red-900 dark:bg-red-950 dark:text-red-200 border border-red-300 dark:border-red-800";
       case "expired":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+        return "bg-yellow-200 text-yellow-900 dark:bg-yellow-950 dark:text-yellow-200 border border-yellow-300 dark:border-yellow-800";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+        return "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-700";
     }
   };
 
@@ -245,7 +256,7 @@ export default function QuotesPage() {
               setSortBy('date');
               setSortOrder('desc');
             }}
-            className="text-sm text-primary dark:text-primary hover:text-primary/80 dark:hover:text-primary/80 underline"
+            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 underline"
           >
             Réinitialiser les filtres
           </button>
@@ -254,12 +265,13 @@ export default function QuotesPage() {
 
       {/* Liste des devis avec DataTable */}
       <DataTable
+        
         columns={[
           {
             key: "quoteNumber",
             header: "N° Devis",
             cell: (quote) => (
-              <Link href={`/dashboard/quotes/${quote.id}`} className="font-medium text-primary hover:underline">
+              <Link href={`/dashboard/quotes/${quote.id}`} className="font-medium  hover:underline">
                 {quote.quoteNumber}
               </Link>
             ),
@@ -270,8 +282,7 @@ export default function QuotesPage() {
             header: "Client",
             cell: (quote) => (
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-white">{quote.clientName}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-300">{quote.clientEmail}</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{quote.client?.name || 'N/A'}</div>
               </div>
             ),
             sortable: true
@@ -316,7 +327,7 @@ export default function QuotesPage() {
             key: "status",
             header: "Statut",
             cell: (quote) => (
-              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeColor(quote.status)}`}>
+              <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm ${getStatusBadgeColor(quote.status)}`}>
                 {getStatusLabel(quote.status)}
               </span>
             )
@@ -325,22 +336,19 @@ export default function QuotesPage() {
             key: "actions",
             header: "Actions",
             cell: (quote) => (
-              <div className="flex items-center justify-end space-x-2">
+              <div className="flex items-center justify-end space-x-3">
                 {/* Bouton Voir */}
                 <div className="relative group">
                   <Link
                     href={`/dashboard/quotes/${quote.id}`}
-                    className="inline-flex items-center justify-center p-2 rounded-full text-primary bg-primary/5 hover:bg-primary/10 transition-colors duration-200"
+                    className="inline-flex items-center justify-center p-2 rounded-full text-blue-600 bg-blue-100 hover:bg-blue-200 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 transition-colors duration-200"
                     aria-label="Voir le devis"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
+                    <Eye className="h-4 w-4" />
                   </Link>
-                  <div className="absolute z-10 w-24 px-2 py-1 text-xs text-center text-white bg-gray-700 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 bottom-full mb-1 left-1/2 transform -translate-x-1/2 transition-opacity duration-200">
+                  <div className="absolute z-10 w-24 px-2 py-1 text-xs text-center text-white bg-gray-800 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 bottom-full mb-1 left-1/2 transform -translate-x-1/2 transition-opacity duration-200">
                     Voir le devis
-                    <svg className="absolute text-gray-700 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xmlSpace="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"/></svg>
+                    <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xmlSpace="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"/></svg>
                   </div>
                 </div>
                 
@@ -348,73 +356,34 @@ export default function QuotesPage() {
                 <div className="relative group">
                   <Link
                     href={`/dashboard/quotes/${quote.id}/edit`}
-                    className="inline-flex items-center justify-center p-2 rounded-full text-primary bg-primary/10 hover:bg-primary/20 transition-colors duration-200"
+                    className="inline-flex items-center justify-center p-2 rounded-full text-indigo-600 bg-indigo-100 hover:bg-indigo-200 dark:text-indigo-400 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/30 transition-colors duration-200"
                     aria-label="Modifier le devis"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
+                    <Pencil className="h-4 w-4" />
                   </Link>
-                  <div className="absolute z-10 w-24 px-2 py-1 text-xs text-center text-white bg-gray-700 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 bottom-full mb-1 left-1/2 transform -translate-x-1/2 transition-opacity duration-200">
+                  <div className="absolute z-10 w-24 px-2 py-1 text-xs text-center text-white bg-gray-800 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 bottom-full mb-1 left-1/2 transform -translate-x-1/2 transition-opacity duration-200">
                     Modifier
-                    <svg className="absolute text-gray-700 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xmlSpace="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"/></svg>
+                    <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xmlSpace="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"/></svg>
                   </div>
                 </div>
                 
                 {/* Menu d'actions */}
                 <div className="relative group">
                   <button
-                    className="inline-flex items-center justify-center p-2 rounded-full text-gray-600 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200"
+                    className="inline-flex items-center justify-center p-2 rounded-full text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
                     aria-label="Plus d'actions"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                    </svg>
+                    <MoreVertical className="h-4 w-4" />
                   </button>
                   <div className="absolute z-20 mt-1 right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden transform scale-95 opacity-0 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto origin-top-right transition-all duration-200">
                     <div className="py-1">
                       <button
                         onClick={async () => {
-                          try {
-                            // Fonction pour dupliquer un devis
-                            const response = await fetch(`/api/quotes/${quote.id}/duplicate`, {
-                              method: 'POST',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              }
-                            });
-                            
-                            if (response.ok) {
-                              toast.success('Devis dupliqué avec succès!');
-                              // Recharger la page pour afficher le nouveau devis
-                              window.location.reload();
-                            } else {
-                              toast.error('Erreur lors de la duplication du devis');
-                            }
-                          } catch (error) {
-                            console.error('Erreur:', error);
-                            toast.error('Une erreur est survenue');
-                          }
-                        }}
-                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                        </svg>
-                        Dupliquer
-                      </button>
-                      <button
-                        onClick={() => {
-                          // Fonction pour marquer comme envoyé
-                          if (window.confirm(`Marquer le devis ${quote.quoteNumber} comme envoyé?`)) {
-                            // Appel API à implémenter
-                          }
+                          // Implementation...
                         }}
                         className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
+                        <Mail className="h-4 w-4 mr-3 text-gray-500 dark:text-gray-400" />
                         Marquer comme envoyé
                       </button>
                       <button
@@ -426,9 +395,7 @@ export default function QuotesPage() {
                         }}
                         className="flex w-full items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3 text-red-500 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
+                        <Trash2 className="h-4 w-4 mr-3 text-red-500 dark:text-red-400" />
                         Supprimer
                       </button>
                     </div>
@@ -472,8 +439,8 @@ export default function QuotesPage() {
             </Link>
           </div>
         }
-        rowClassName={(row) => `hover:bg-gray-50 dark:hover:bg-gray-700`}
-        headerClassName="bg-gray-50 dark:bg-gray-700"
+        rowClassName={(row) => `hover:bg-gray-50 dark:hover:bg-gray-800/70 border-b border-gray-200 dark:border-gray-700`}
+        headerClassName="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium"
       />
     </div>
   );

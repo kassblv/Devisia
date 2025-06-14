@@ -121,10 +121,10 @@ export function DataTable<T>({
   };
 
   return (
-    <div className={cn("w-full space-y-4", className)}>
-      <div className="rounded-md border overflow-hidden">
-        <div className={scrollable ? "overflow-x-auto" : "overflow-hidden"}>
-          <Table>
+    <div className={cn("w-full space-y-4 overflow-hidden", className)}> 
+      <div className="rounded-md border"> 
+        <div className={scrollable ? "overflow-x-auto" : "overflow-x-hidden max-w-full"}>
+          <Table scrollable={scrollable}>
             <TableHeader className={headerClassName}>
               <TableRow>
                 {visibleColumns.map((column, idx) => (
