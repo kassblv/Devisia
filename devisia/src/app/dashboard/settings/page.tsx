@@ -34,13 +34,11 @@ export default function SettingsPage() {
   
   // Paramètres d'apparence
   const [primaryColor, setPrimaryColor] = useState("#3b82f6");
-  const [darkMode, setDarkMode] = useState(false);
   
   // Éviter un problème d'hydratation avec next-themes
   useEffect(() => {
     setMounted(true);
-    setDarkMode(theme === "dark");
-  }, [theme]);
+  }, []);
   
   const handleGeneralSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -428,28 +426,40 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 border rounded mb-2">
-                  <div>
-                    <p className="font-medium">Mode sombre</p>
-                    <p className="text-sm text-muted-foreground">
-                      Activer le mode sombre pour l'interface
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={darkMode}
-                      onChange={() => {
-                        setDarkMode(!darkMode);
-                        // Appliquer le thème immédiatement pour une meilleure expérience utilisateur
-                        setTheme(!darkMode ? "dark" : "light");
-                      }}
-                      className="sr-only peer"
-                    />
-                    <div className={`w-11 h-6 rounded-full peer ${darkMode ? 'bg-primary' : 'bg-muted'} peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-ring transition-colors`}>
-                      <div className={`h-5 w-5 rounded-full bg-white absolute left-0.5 top-0.5 transition-transform ${darkMode ? 'translate-x-5' : 'translate-x-0'}`}></div>
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium mb-1">Thème</label>
+                  
+                  {mounted && (
+                    <div className="grid grid-cols-3 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setTheme("light")}
+                        className={`flex flex-col items-center justify-center p-3 border rounded-lg transition-all ${
+                          theme === "light" ? "border-primary bg-primary/10" : "border-muted hover:border-muted-foreground"
+                        }`}
+                      >
+                        <svg className="w-6 h-6 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                        </svg>
+                        <span className="text-sm font-medium">Clair</span>
+                      </button>
+                      
+                      <button
+                        type="button"
+                        onClick={() => setTheme("dark")}
+                        className={`flex flex-col items-center justify-center p-3 border rounded-lg transition-all ${
+                          theme === "dark" ? "border-primary bg-primary/10" : "border-muted hover:border-muted-foreground"
+                        }`}
+                      >
+                        <svg className="w-6 h-6 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                        </svg>
+                        <span className="text-sm font-medium">Sombre</span>
+                      </button>
+                      
+                 
                     </div>
-                  </label>
+                  )}
                 </div>
                 
                 <div className="flex justify-end">

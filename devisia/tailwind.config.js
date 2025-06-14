@@ -88,6 +88,21 @@ module.exports = {
         'status-approved-text': '#059669',
         'status-rejected-bg': '#fee2e2',
         'status-rejected-text': '#dc2626',
+        
+        // Nouvelles couleurs pour remplacer les couleurs statiques
+        ui: {
+          'silver': '#C0C0C0',
+          'light-gray': '#F5F5F7',
+          'dark': '#1A1A1A',
+          'light-blue': '#93C5FD',
+          'dark-blue': '#002147',
+          'focus-gray': '#333333',
+          'brand-blue': '#3275F8',
+        },
+      },
+      gradients: {
+        'blue-primary': 'conic-gradient(from 90deg at 50% 50%, var(--tw-colors-primary-500) 0%, var(--tw-colors-ui-light-blue) 50%, var(--tw-colors-primary-500) 100%)',
+        'silver': 'conic-gradient(from 90deg at 50% 50%, var(--tw-colors-ui-dark-blue) 0%, var(--tw-colors-ui-silver) 50%, var(--tw-colors-ui-dark-blue) 100%)',
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)', 'sans-serif'],

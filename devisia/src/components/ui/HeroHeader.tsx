@@ -140,7 +140,7 @@ export function HeroHeader() {
                             <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 
                                 <Link href="/auth/login">
-                                  <button className={cn(!isScrolled ? 'lg:inline-flex' : 'hidden',"px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#333] bg-[rgba(31,31,31,0.62)] text-gray-300 rounded-full hover:border-white/50 hover:text-white transition-colors duration-200 w-full sm:w-auto")}>
+                                  <button className={cn(!isScrolled ? 'lg:inline-flex' : 'hidden',"px-4 py-2 sm:px-3 text-xs sm:text-sm border border-ui-focus-gray bg-ui-dark/60 text-ui-light-gray rounded-full hover:border-ui-light-gray/50 hover:text-ui-light-gray transition-colors duration-200 w-full sm:w-auto")}>
                                     Connexion
                                   </button>
                                 </Link> 
@@ -149,12 +149,12 @@ export function HeroHeader() {
                                 <div className="relative group w-full sm:w-auto">
        <div className="absolute inset-0 -m-2 rounded-full
                      hidden sm:block
-                     bg-gray-100
+                     bg-ui-light-gray
                      opacity-40 filter blur-lg pointer-events-none
                      transition-all duration-300 ease-out
                      group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
        <Link href="/auth/register">
-         <button className={cn("lg:inline-flex relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-gray-100 to-gray-300 rounded-full hover:from-gray-200 hover:to-gray-400 transition-all duration-200 w-full sm:w-auto")}>
+         <button className={cn("lg:inline-flex relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-ui-dark bg-gradient-to-br from-ui-light-gray to-ui-silver rounded-full hover:from-ui-light-gray hover:to-ui-silver transition-all duration-200 w-full sm:w-auto")}>
            Créer un devis
          </button>
        </Link>

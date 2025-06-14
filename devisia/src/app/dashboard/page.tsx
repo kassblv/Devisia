@@ -126,7 +126,7 @@ export default function Dashboard() {
               {loading ? (
                 <Skeleton className="h-8 w-12 dark:bg-gray-700" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{displayStats.totalQuotes}</p>
+                <p className="text-2xl font-serif font-bold text-gray-900 dark:text-white">{displayStats.totalQuotes}</p>
               )}
             </div>
           </div>
@@ -145,7 +145,7 @@ export default function Dashboard() {
               {loading ? (
                 <Skeleton className="h-8 w-12 dark:bg-gray-700" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{displayStats.pendingQuotes}</p>
+                <p className="text-2xl font-serif font-bold text-gray-900 dark:text-white">{displayStats.pendingQuotes}</p>
               )}
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function Dashboard() {
               {loading ? (
                 <Skeleton className="h-8 w-12 dark:bg-gray-700" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{displayStats.approvedQuotes}</p>
+                <p className="text-2xl font-serif font-bold text-gray-900 dark:text-white">{displayStats.approvedQuotes}</p>
               )}
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function Dashboard() {
               {loading ? (
                 <Skeleton className="h-8 w-24 dark:bg-gray-700" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(displayStats.totalRevenue)}</p>
+                <p className="text-2xl font-mono font-bold text-gray-900 dark:text-white">{formatCurrency(displayStats.totalRevenue)}</p>
               )}
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function Dashboard() {
       {/* Recent Quotes - Design amélioré */}
       <div className="bg-white dark:bg-gray-800 bg-gradient-to-br from-white to-indigo-50/30 dark:from-gray-800 dark:to-indigo-900/20 rounded-xl shadow-md border border-indigo-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-lg">
         <div className="px-6 py-5 border-b border-indigo-200 dark:border-gray-700 flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-indigo-900 dark:text-white">Devis récents</h2>
+          <h2 className="text-lg font-serif font-semibold text-indigo-900 dark:text-white">Devis récents</h2>
           <Link
             href="/dashboard/quotes"
             className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center transition-colors duration-200 hover:bg-indigo-100/50 dark:hover:bg-indigo-900/30 px-3 py-1 rounded-md"
@@ -231,7 +231,7 @@ export default function Dashboard() {
                     className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
                   >
                     <svg className="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     Nouveau devis
                   </Link>
@@ -321,7 +321,7 @@ export default function Dashboard() {
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Actions rapides</h2>
+        <h2 className="text-lg font-serif font-semibold text-gray-900 dark:text-white mb-4">Actions rapides</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
             href="/dashboard/quotes/new"

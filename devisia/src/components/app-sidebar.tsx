@@ -19,6 +19,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -115,8 +116,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <a href="/dashboard" className="flex items-center gap-2 transition-colors duration-normal">
-                <IconInnerShadowTop className="!size-5 text-primary" />
-                <span className="text-base font-semibold text-sidebar-accent-foreground">Devisia</span>
+                <Image 
+                  src="/logos/logo_icone.png" 
+                  alt="Devisia Logo"
+                  width={24} 
+                  height={24}
+                  className="object-contain"
+                />
+                <span className="font-serif text-base font-semibold text-sidebar-accent-foreground">Devisia</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -36,7 +36,7 @@ export function NavMain({
             >
               <Link href="/dashboard/quotes/new">
                 <IconCirclePlusFilled />
-                <span>Nouveau Devis</span>
+                <span className="font-serif">Nouveau Devis</span>
               </Link>
             </SidebarMenuButton>
 
@@ -54,7 +54,7 @@ export function NavMain({
                 >
                   <Link href={item.url}>
                     {item.icon && <item.icon className={cn(isActive ? "text-sidebar-accent-foreground" : "")} />}
-                    <span>{item.title}</span>
+                    <span className="font-sans tracking-wide">{item.title}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
